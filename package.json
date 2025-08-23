@@ -1,0 +1,10 @@
+{
+  "name": "erkanart",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n CLIENT,SERVER -c auto \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
