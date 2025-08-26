@@ -1,13 +1,23 @@
 <!doctype html>
 <html lang="en">
-  <head>
-  <script src="http://localhost:8097"></script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ErkanArt</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ErkanArt</title>
+  <script>
+    // Apply initial theme ASAP (before CSS loads) to avoid FOUC.
+    const stored = localStorage.getItem('theme'); // 'light' | 'dark' | null (system)
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.classList.toggle(
+      'dark',
+      stored === 'dark' || (stored == null && systemPrefersDark)
+    );
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

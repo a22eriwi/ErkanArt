@@ -1,10 +1,12 @@
 import Header from "./Components/Header"
 function App() {
 
-  return   (
+  return (
     <>
-    <Header></Header>
-     </>
+      <div className="bg-gray-100 h-screen dark:bg-gray-800">
+        <Header></Header>
+      </div>
+    </>
   )
 }
 
