@@ -12,4 +12,7 @@
   font-style: normal;
 }
 
+button:hover{
+  cursor:pointer;
+}
 
