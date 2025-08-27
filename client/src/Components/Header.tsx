@@ -27,7 +27,7 @@ export default function Header() {
       <nav aria-label="Global" className="flex items-center justify-between sm:px-8 max-w-full px-4 pb-0 pt-0">
         <div className="flex lg:flex-1">
           <a href="#">
-            <Logga/>
+            <Logga />
           </a>
         </div>
         <div className="flex lg:hidden items-center">
@@ -129,7 +129,13 @@ export default function Header() {
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100 hover:dark:bg-gray-800 hover:dark:text-gray-100"
                 >
-                  Art
+                  Paintings
+                </a>
+                <a
+                  href="#"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:bg-gray-100 hover:dark:bg-gray-800 hover:dark:text-gray-100"
+                >
+                  Photography
                 </a>
                 <a
                   href="#"
