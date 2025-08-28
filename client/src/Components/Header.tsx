@@ -1,4 +1,5 @@
 import { useTheme } from "../useTheme";
+import { NavLink } from "react-router-dom";
 import DarkIcon from "../assets/darkMode.svg?react";
 import LightIcon from "../assets/lightMode.svg?react";
 import KontoIcon from "../assets/konto.svg?react";
@@ -8,9 +9,7 @@ import { useState } from 'react'
 import {
   Dialog,
   DialogPanel,
-  Popover,
   PopoverGroup,
-  PopoverPanel,
 } from '@headlessui/react'
 import {
   Bars3Icon,
@@ -24,79 +23,84 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
-    <header>
-      <nav aria-label="Global" className="flex items-center justify-between sm:px-8 max-w-full px-2 pb-0 pt-0">
-        <div className="flex lg:flex-1">
-          <a href="#">
-            <Logga className="w-[130px] sm:w-[180px]" />
-          </a>
+    <header className="sticky top-0 z-30 bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-gray-200 border-b-1 border-gray-300 dark:border-gray-800 mb-4">
+      <nav aria-label="Global" className="flex items-center justify-between sm:px-6 xl:px-10 max-w-full px-4 pb-0">
+        <div className="flex lg:flex-1 items-center">
+          <NavLink to="/" end>
+            <Logga className="w-[130px] sm:w-[150px] xl:w-[180px]" />
+          </NavLink>
+          <button onClick={() => setTheme(isDark ? "light" : "dark")} className="relative flex xl:ml-2 h-8 w-16 sm:w-18 items-center rounded group">
+            <span className={`absolute left-1 h-7 w-7 sm:h-8 sm:w-8 rounded-full inset-shadow-sm inset-shadow-indigo-400 duration-400 ease-in-out transform transition-transform ${isDark ? "translate-x-7 sm:translate-x-8" : "-translate-x-0 sm:-translate-x-0"}`} />
+            <LightIcon className="absolute left-2  size-5 sm:size-6 group-hover:text-sky-700 dark:group-hover:text-white" />
+            <DarkIcon className="absolute right-2 size-5 sm:size-6 group-hover:text-sky-700 dark:group-hover:text-white" />
+          </button>
         </div>
         <div className="flex lg:hidden items-center">
-          <button onClick={() => setTheme(isDark ? "light" : "dark")} className="relative flex h-8 w-18 sm:mr-2 items-center rounded group">
-            <span className={`absolute left-1 h-8 w-9 rounded-full inset-shadow-sm inset-shadow-indigo-400 duration-400 ease-in-out transform transition-transform ${isDark ? "translate-x-7.5" : "-translate-x-0.5"}`} />
-            <LightIcon className="absolute left-2  h-6 w-6 group-hover:text-sky-700 dark:group-hover:text-white"/>
-            <DarkIcon className="absolute right-2 h-6 w-6 group-hover:text-sky-700 dark:group-hover:text-white"/>
+          <button className="mx-2">
+            <SearchIcon className="size-6 hover:text-sky-700 dark:hover:text-white" />
           </button>
           <button className=" mx-2">
-            <KontoIcon className="size-5 hover:text-sky-700 dark:hover:text-white" />
+            <NavLink to="/Login"><KontoIcon className="size-5 hover:text-sky-700 dark:hover:text-white" /></NavLink>
           </button>
-          <button className="mx-2">
-            <SearchIcon className="size-6 hover:text-sky-700 dark:hover:text-white"/>
-          </button>
-          {/* Hamburger menu */}
-          <button type="button" onClick={() => setMobileMenuOpen(true)} className="inline-flex justify-center rounded-md mx-2 hover:text-sky-700 dark:hover:text-white">
+
+          {/* Hamburger button */}
+          <button type="button" onClick={() => setMobileMenuOpen(true)} className="inline-flex justify-center rounded-md ml-2 hover:text-sky-700 dark:hover:text-white">
             <span className="sr-only">Open main menu</span>
-            <Bars3Icon aria-hidden="true" className="size-7 sm:size-8"/>
+            <Bars3Icon aria-hidden="true" className="size-7 sm:size-8" />
           </button>
         </div>
+
+        {/* Big nav */}
         <PopoverGroup className="hidden lg:flex">
-          <Popover className="relative">
-            <PopoverPanel
-              transition
-              className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 overflow-hidden rounded-3xl shadow-lg outline-1
-              outline-gray-900/5 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in">
-            </PopoverPanel>
-          </Popover>
           <div className="lg:flex lg:gap-x-10">
-            <a href="#"
-              className="relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[15px] after:bottom-0 after:h-[2px] after:w-0
-              after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out hover:after:w-full">
+            <NavLink
+              to="/Paintings"
+              className={({ isActive }) =>
+                `relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[29px] after:bottom-0 after:h-[2px]
+                after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
+              }>
               Paintings
-            </a>
-            <a href="#"
-              className="relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[15px] after:bottom-0 after:h-[2px] after:w-0
-              after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out hover:after:w-full">
+            </NavLink>
+            <NavLink
+              to="/Photography"
+              className={({ isActive }) =>
+                `relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[29px] after:bottom-0 after:h-[2px]
+               after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
+              }>
               Photography
-            </a>
-            <a href="#"
-              className="relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[15px] after:bottom-0 after:h-[2px] after:w-0
-              after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out hover:after:w-full">
+            </NavLink>
+            <NavLink
+              to="/Artists"
+              className={({ isActive }) =>
+                `relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[29px] after:bottom-0 after:h-[2px]
+              after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
+              }>
               Artists
-            </a>
-            <a href="#"
-              className="relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[15px] after:bottom-0 after:h-[2px] after:w-0
-              after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out hover:after:w-full">
+            </NavLink>
+            <NavLink
+              to="/About"
+              className={({ isActive }) =>
+                `relative text-base/6 font-semibold after:absolute after:left-0 after:translate-y-[29px] after:bottom-0 after:h-[2px]
+              after:bg-gray-900 dark:after:bg-gray-200 after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
+              }>
               About
-            </a>
+            </NavLink>
           </div>
         </PopoverGroup>
+
         <div className="hidden lg:flex lg:flex-1 lg:justify-end items-center">
-          <button onClick={() => setTheme(isDark ? "light" : "dark")} className="relative flex mr-2 h-8 w-18 items-center rounded group">
-            <span className={`absolute left-1 h-8 w-9 rounded-full inset-shadow-sm inset-shadow-indigo-400 duration-400 ease-in-out transform transition-transform ${isDark ? "translate-x-7.5" : "-translate-x-0.5"}`} />
-            <LightIcon className="absolute left-2  size-6 group-hover:text-sky-700 dark:group-hover:text-white"/>
-            <DarkIcon className="absolute right-2 size-6 group-hover:text-sky-700 dark:group-hover:text-white"/>
+          <button className="mx-2">
+            <SearchIcon className="size-6 hover:text-sky-700 dark:hover:text-white" />
           </button>
           <button className=" mx-2">
-            <KontoIcon className="size-5 hover:text-sky-700 dark:hover:text-white" />
-          </button>
-          <button className="mx-2">
-            <SearchIcon className="size-6 hover:text-sky-700 dark:hover:text-white"/>
+            <NavLink to="/Login"><KontoIcon className="size-5 hover:text-sky-700 dark:hover:text-white" /></NavLink>
           </button>
         </div>
       </nav>
-      {/* Menu open*/}
+
+      {/* Mobile menu open*/}
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
-        <div className="fixed inset-0 z-40 bg-black/40 transition-opacity duration-100 data-[closed]:opacity-0" />
+        <div className="fixed inset-0 z-40 bg-black/40 data-[closed]:opacity-0" />
         <DialogPanel
           transition
           className="fixed inset-y-0 right-0 z-50 w-3/4 sm:w-1/2 bg-gray-200 dark:bg-gray-900 dark:text-gray-200 p-6 pt-9 sm:pt-9 overflow-y-auto h-screen transform transition-transform duration-400 ease-in-out data-[closed]:translate-x-full">
@@ -114,23 +118,24 @@ export default function Header() {
           <div className="mt-6 flow-root text-center">
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
-                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
+                <NavLink to="/Paintings" onClick={() => setMobileMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
                   Paintings
-                </a>
-                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
+                </NavLink>
+                <NavLink to="/Photography" onClick={() => setMobileMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
                   Photography
-                </a>
-                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
+                </NavLink>
+                <NavLink to="/Artists" onClick={() => setMobileMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
                   Artists
-                </a>
-                <a href="#" className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
+                </NavLink>
+                <NavLink to="/About" onClick={() => setMobileMenuOpen(false)} className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold hover:text-sky-700 hover:dark:text-white">
                   About
-                </a>
+                </NavLink>
               </div>
             </div>
           </div>
         </DialogPanel>
       </Dialog>
+
     </header>
   )
 }
