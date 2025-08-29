@@ -6,7 +6,6 @@ import './index.css';
 import About from './Pages/About.tsx';
 import Artists from './Pages/Artists.tsx';
 import Home from './Pages/Home.tsx';
-import Login from './Pages/Login.tsx';
 import Paintings from './Pages/Paintings.tsx';
 import Photography from "./Pages/Photography.tsx";
 
@@ -19,7 +18,6 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "About", element: <About /> },
       { path: "Artists", element: <Artists /> },
-      { path: "Login", element: <Login /> },
       { path: "Paintings", element: <Paintings /> },
       { path: "Photography", element: <Photography /> }
     ],
