@@ -1,6 +1,6 @@
 import KontoIcon from "../assets/konto.svg?react";
 
-export default function LoginModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { isOpen: boolean; onClose: () => void; onSwitchToRegister: () => void; }) {
   if (!isOpen) return null;
 
   return (
@@ -19,14 +19,14 @@ export default function LoginModal({ isOpen, onClose }: { isOpen: boolean; onClo
             <KontoIcon className="size-15" />
           </div>
           <h2 className="mt-6 text-center text-2xl font-bold tracking-tight">
-            Sign in to your account
+            Login
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
             <form action="#" method="POST" className="space-y-6">
                 <div className="mt-2 mb-4">
-                  <input placeholder="Email address" id="email" name="email" type="email" required autoComplete="email"
+                  <input placeholder="Email Address" id="email" name="email" type="email" required autoComplete="email"
                   className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500"/>
                 </div>
 
@@ -44,16 +44,16 @@ export default function LoginModal({ isOpen, onClose }: { isOpen: boolean; onClo
 
               <div>
                 <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-500 dark:hover:bg-indigo-400 px-3 py-2 text-sm font-semibold text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
-                  Sign in
+                  Login
                 </button>
               </div>
             </form>
 
           <p className="mt-8 text-center text-sm">
             Don’t have an account?{" "}
-            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
-              Register here
-            </a>
+            <button onClick={onSwitchToRegister} className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
+              Sign Up
+            </button>
           </p>
         </div>
       </div>
