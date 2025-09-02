@@ -48,7 +48,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
             <KontoIcon className="size-15" />
           </div>
           <h2 className="mt-6 text-center text-2xl font-bold tracking-tight">
-            Sign Up
+            Create your account
           </h2>
         </div>
 
@@ -77,7 +77,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
 
             <div>
               <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-500 dark:hover:bg-indigo-400 px-3 py-2 text-sm font-semibold text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
-                Create Account
+                Sign up
               </button>
             </div>
             {message && <p className="text-center text-sm mt-4">{message}</p>}
@@ -86,7 +86,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
           <p className="mt-8 text-center text-sm">
             Already have an account?{" "}
             <button onClick={onSwitchToLogin} className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
-              Login
+              Log in
             </button>
           </p>
 

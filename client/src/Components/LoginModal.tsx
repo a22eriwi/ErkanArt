@@ -24,7 +24,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { i
         setMessage(data.error || "Login failed");
         setStatus("error");
       } else {
-        setMessage("Logged in successfully!");
+        setMessage("Logged in!");
         setStatus("success");
 
         // Save access token
@@ -60,7 +60,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { i
             <KontoIcon className="size-15" />
           </div>
           <h2 className="mt-6 text-center text-2xl font-bold tracking-tight">
-            Login
+            Sign into your account
           </h2>
         </div>
 
@@ -85,7 +85,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { i
 
             <div>
               <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-500 dark:hover:bg-indigo-400 px-3 py-2 text-sm font-semibold text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
-                Login
+                Sign in
               </button>
             </div>
             {message && ( <p className={`text-center text-sm mt-4 ${status === "success" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>{message}</p>)}
@@ -94,7 +94,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { i
           <p className="mt-8 text-center text-sm">
             Don’t have an account?{" "}
             <button onClick={onSwitchToRegister} className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
-              Sign Up
+              Sign up
             </button>
           </p>
         </div>
