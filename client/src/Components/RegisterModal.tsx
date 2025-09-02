@@ -1,7 +1,36 @@
+import { useState } from "react";
 import KontoIcon from "../assets/konto.svg?react";
 
-export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { isOpen: boolean; onClose: () => void; onSwitchToLogin: () =>void; }) {
+export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { isOpen: boolean; onClose: () => void; onSwitchToLogin: () => void; }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+
   if (!isOpen) return null;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:4000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName, email, password }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        setMessage(data.error || "Registration failed");
+      } else {
+        setMessage(data.message || "Registration successful! Wait for approval.");
+      }
+    } catch (err) {
+      console.error(err);
+      setMessage("Something went wrong");
+    }
+  };
 
   return (
     <div onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5">
@@ -24,28 +53,26 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
 
             <div className="mb-4">
-              <input placeholder="First Name" id="fname" name="fname" type="text" required autoComplete="email"
+              <input placeholder="First Name" id="fname" name="fname" type="text" required autoComplete="email" value={firstName} onChange={(e) => setFirstName(e.target.value)}
                 className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
             </div>
 
             <div className="mb-4">
-              <input placeholder="Last Name" id="sname" name="sname" type="text" required autoComplete="email"
+              <input placeholder="Last Name" id="sname" name="sname" type="text" required autoComplete="email" value={lastName} onChange={(e) => setLastName(e.target.value)}
                 className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
             </div>
 
             <div className="mb-4">
-              <input placeholder="Email Address" id="email" name="email" type="email" required autoComplete="email"
+              <input placeholder="Email Address" id="email" name="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
             </div>
 
             <div>
-              <div>
-                <input placeholder="Password" id="password" name="password" type="password" required autoComplete="current-password"
-                  className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
-              </div>
+              <input placeholder="Password" id="password" name="password" type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)}
+                className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
             </div>
 
             <div>
@@ -53,6 +80,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
                 Create Account
               </button>
             </div>
+            {message && <p className="text-center text-sm mt-4">{message}</p>}
           </form>
 
           <p className="mt-8 text-center text-sm">
@@ -61,6 +89,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
               Login
             </button>
           </p>
+
         </div>
       </div>
     </div>
