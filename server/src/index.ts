@@ -2,7 +2,6 @@
 import "dotenv/config";
 import express from "express";
 import cors from "cors";
-import { r2, R2_BUCKET } from './r2';
 import { connectDB } from "./db";
 
 import authRoutes from "./routes/auth";
