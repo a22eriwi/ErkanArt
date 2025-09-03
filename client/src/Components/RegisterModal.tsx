@@ -1,3 +1,5 @@
+// client/src/Components/RegisterModal.tsx
+
 import { useState } from "react";
 import KontoIcon from "../assets/konto.svg?react";
 
@@ -7,6 +9,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
 
   if (!isOpen) return null;
 
@@ -14,7 +17,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:4000/api/register", {
+      const res = await fetch(`${API_URL}/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName, email, password }),
@@ -38,7 +41,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
       <div className="relative w-full max-w-lg px-6 sm:px-14 py-12 sm:py-18 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-lg">
 
         {/* Close button */}
-        <button onClick={onClose} className="text-lg absolute top-3 right-3 hover:text-sky-700 dark:hover:text-white">
+        <button onClick={onClose} className="text-lg absolute top-3 right-3">
           ✕
         </button>
 
@@ -86,7 +89,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
           <p className="mt-8 text-center text-sm">
             Already have an account?{" "}
             <button onClick={onSwitchToLogin} className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
-              Log in
+              Sign in
             </button>
           </p>
 
