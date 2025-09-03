@@ -1,4 +1,5 @@
 // server/src/routes/admin.ts
+
 import { Router } from "express";
 import User from "../models/User";
 import { requireAuth, requireAdmin } from "../middleware/auth";

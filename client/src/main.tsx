@@ -8,6 +8,7 @@ import Artists from './Pages/Artists.tsx';
 import Home from './Pages/Home.tsx';
 import Paintings from './Pages/Paintings.tsx';
 import Photography from "./Pages/Photography.tsx";
+import Profile from "./Pages/Profile.tsx";
 
 
 const router = createBrowserRouter([
@@ -19,7 +20,8 @@ const router = createBrowserRouter([
       { path: "About", element: <About /> },
       { path: "Artists", element: <Artists /> },
       { path: "Paintings", element: <Paintings /> },
-      { path: "Photography", element: <Photography /> }
+      { path: "Photography", element: <Photography /> },
+      { path: "Profile", element: <Profile /> }
     ],
   },
 ]);

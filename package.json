@@ -5,10 +5,12 @@
     "dev": "concurrently -k -n CLIENT,SERVER -c auto \"npm run dev --prefix client\" \"npm run dev --prefix server\""
   },
   "devDependencies": {
+    "@types/jwt-decode": "^2.2.1",
     "concurrently": "^9.2.0",
     "vite-plugin-svgr": "^4.5.0"
   },
   "dependencies": {
+    "jwt-decode": "^4.0.0",
     "tailwindcss": "^4.1.12"
   }
 }
