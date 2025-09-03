@@ -1,48 +1,28 @@
+// client/src/Components/LoginModal.tsx
+
 import { useState } from "react";
+import { useAuth } from "./authContext";
 import KontoIcon from "../assets/konto.svg?react";
 
 export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { isOpen: boolean; onClose: () => void; onSwitchToRegister: () => void; }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-  const [status, setStatus] = useState<"success" | "error" | "">("");
+  const { login } = useAuth();
   if (!isOpen) return null;
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:4000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    await login(email, password); 
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setMessage(data.error || "Login failed");
-        setStatus("error");
-      } else {
-        setMessage("Logged in!");
-        setStatus("success");
-
-        // Save access token
-        localStorage.setItem("token", data.token);
-
-        //store user info
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        setTimeout(() => {
-          onClose();
-        }, 600);
-      }
-
-    } catch (err) {
-      console.error(err);
-      setMessage("Something went wrong");
-    }
-  };
+    setTimeout(() => {
+      onClose();
+    }, 300);
+  } catch (err: any) {
+    console.error(err);
+  }
+};
 
   return (
     <div onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5">
@@ -50,7 +30,7 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { i
       <div className="relative w-full max-w-lg px-6 sm:px-14 py-12 sm:py-18 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-lg">
 
         {/* Close button */}
-        <button onClick={onClose} className="text-lg absolute top-3 right-3 hover:text-sky-700 dark:hover:text-white">
+        <button onClick={onClose} className="text-lg absolute top-3 right-3">
           ✕
         </button>
 
@@ -88,7 +68,6 @@ export default function LoginModal({ isOpen, onClose, onSwitchToRegister, }: { i
                 Sign in
               </button>
             </div>
-            {message && ( <p className={`text-center text-sm mt-4 ${status === "success" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}>{message}</p>)}
           </form>
 
           <p className="mt-8 text-center text-sm">
