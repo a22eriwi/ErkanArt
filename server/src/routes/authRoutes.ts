@@ -81,6 +81,8 @@ router.post("/login", async (req, res) => {
     const payload = {
       id: user._id,
       email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
       role: user.role,
       isApproved: user.isApproved,
     };
@@ -117,6 +119,8 @@ router.post("/refresh", (req, res) => {
     const payload = {
       id: decoded.id,
       email: decoded.email,
+      firstName: decoded.firstName,
+      lastName: decoded.lastName,
       role: decoded.role,
       isApproved: decoded.isApproved,
     };
@@ -124,7 +128,8 @@ router.post("/refresh", (req, res) => {
     const { accessToken, refreshToken } = generateTokens(payload);
 
     setRefreshCookie(res, refreshToken);
-    res.json({ accessToken });
+
+    res.json({ accessToken, user: payload });
   } catch {
     return res.sendStatus(403);
   }

@@ -2,17 +2,17 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
-import { jwtDecode } from "jwt-decode";
 
-interface DecodedUser {
+interface User {
   email: string;
+  firstName: string;
+  lastName: string;
   role?: string;
-  exp?: number;
   isApproved: boolean;
 }
 
 interface AuthContextType {
-  user: DecodedUser | null;
+  user: User | null;
   isLoggedIn: boolean;
   accessToken: string | null;
   login: (email: string, password: string) => Promise<void>;
@@ -22,7 +22,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<DecodedUser | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const API_URL = import.meta.env.VITE_API_URL;
@@ -44,29 +44,35 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const data = await res.json();
 
     setAccessToken(data.accessToken);
-    const decoded: DecodedUser = jwtDecode(data.accessToken);
-    setUser(decoded);
+    setUser(data.user);
     setIsLoggedIn(true);
   }
 
   async function refresh() {
-    const res = await fetch(`${API_URL}/refresh`, {
-      method: "POST",
-      credentials: "include",
-    });
+    try {
+      const res = await fetch(`${API_URL}/refresh`, {
+        method: "POST",
+        credentials: "include",
+      });
 
-    if (!res.ok) {
+      if (!res.ok) {
+        setUser(null);
+        setIsLoggedIn(false);
+        setAccessToken(null);
+        return;
+      }
+
+      const data = await res.json();
+      setAccessToken(data.accessToken);
+      setUser(data.user);
+      setIsLoggedIn(true);
+    }
+    catch (err) {
+      console.error("Refresh failed", err);
       setUser(null);
       setIsLoggedIn(false);
       setAccessToken(null);
-      return;
     }
-
-    const data = await res.json();
-    setAccessToken(data.accessToken);
-    const decoded: DecodedUser = jwtDecode(data.accessToken);
-    setUser(decoded);
-    setIsLoggedIn(true);
   }
 
   async function logout() {
