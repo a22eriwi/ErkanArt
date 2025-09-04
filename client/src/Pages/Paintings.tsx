@@ -20,6 +20,7 @@ const paintings = [
 export default function Paintings() {
   return (
     <div>
+      <h1 className="text-center text-2xl font-semibold mb-5">Paintings</h1>
       <div className="lg:max-w-[900px] xl:max-w-[1100px] m-auto px-5">
         {/* Masonry columns */}
         <div className="columns-2 sm:columns-3 lg:columns-3 xl:columns-4 gap-6 [column-fill:balance]">
