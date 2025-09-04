@@ -11,7 +11,7 @@ export default function App() {
   const [registerOpen, setRegisterOpen] = useState(false);
   return (
     <AuthProvider>
-      <div className="bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-gray-200 pb-8">
+      <div className="bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-white pb-8">
         <Header onOpenLogin={() => setLoginOpen(true)} />
         <main>
           <Outlet />
