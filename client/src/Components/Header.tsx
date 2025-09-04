@@ -57,7 +57,7 @@ export default function Header({ onOpenLogin }: HeaderProps) {
 
           {isLoggedIn && (
             <Menu as="div" className="relative inline-block">
-              <MenuButton className="group inline-flex w-full justify-center gap-x-1.5 rounded-md outline-1 outline-gray-300 dark:outline-gray-800 px-3 py-2 text-sm font-semibold inset-ring-1 inset-ring-white/5
+              <MenuButton className="group inline-flex w-full justify-center gap-x-1.5 rounded-md outline-1 outline-gray-300 dark:outline-gray-800 px-3 py-2 text-sm font-semibold dark:inset-ring-1 dark:inset-ring-white/5
             hover:outline-gray-400 dark:hover:outline-gray-600
             aria-expanded:outline-gray-400
             dark:aria-expanded:outline-gray-600"
@@ -68,8 +68,8 @@ export default function Header({ onOpenLogin }: HeaderProps) {
 
               <MenuItems
                 transition
-                className="absolute right-0 z-10 mt-2 w-60 p-3 text-sm origin-top-right font-semibold rounded-xl bg-gray-100 dark:bg-gray-900 shadow-lg outline-1 outline-gray-300 dark:outline-gray-600
-               -outline-offset-1 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                className="absolute right-0 z-10 mt-2 w-60 p-3 text-sm origin-top-right font-semibold rounded-xl bg-gray-100 dark:bg-gray-900 shadow-md outline-1 outline-gray-200 dark:outline-gray-800
+       transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in inset-ring-1 dark:inset-ring-white/5 inset-ring-gray-200/20"
               >
                 <div className="py-1">
                   <MenuItem>
@@ -107,10 +107,18 @@ export default function Header({ onOpenLogin }: HeaderProps) {
         </div>
       </div>
 
-      <nav aria-label="Global" className="hidden lg:flex items-center justify-center w-full py-3 lg:border-y-1 border-gray-300 dark:border-gray-800">
+      <nav aria-label="Global" className="hidden lg:flex items-center justify-center w-full py-3 lg:border-b-1 border-gray-300 dark:border-gray-800">
         {/* Big nav */}
         <PopoverGroup className="hidden lg:flex">
           <div className="lg:flex lg:gap-x-10">
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                `relative text-sm/6 font-semibold after:absolute after:left-0 after:translate-y-[13px] after:bottom-0 after:h-[2px]
+                after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
+              }>
+              Home
+            </NavLink>
             <NavLink
               to="/Paintings"
               className={({ isActive }) =>
@@ -169,6 +177,9 @@ export default function Header({ onOpenLogin }: HeaderProps) {
           </div>
           <div className="flow-root">
             <div className="space-y-2 py-6 border-b-1 border-gray-300 dark:border-gray-800">
+              <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
+                Home
+              </NavLink>
               <NavLink to="/Paintings" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
                 Paintings
               </NavLink>
@@ -184,17 +195,17 @@ export default function Header({ onOpenLogin }: HeaderProps) {
             </div>
             <div className="-mx-3 space-y-2 py-6">
               {!isLoggedIn && (
-                <button onClick={() => {setMobileMenuOpen(false); onOpenLogin();}} className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                <button onClick={() => { setMobileMenuOpen(false); onOpenLogin(); }} className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                   <KontoIcon className="size-5" />
                   <span>Sign in</span>
                 </button>
               )}
               {isLoggedIn && (
                 <>
-                  <NavLink to="/Profile" onClick={() => {setMobileMenuOpen(false)}} className="block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
+                  <NavLink to="/Profile" onClick={() => { setMobileMenuOpen(false) }} className="block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
                     Profile
                   </NavLink>
-                  <button onClick={() => {setMobileMenuOpen(false); logout();}}   className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                  <button onClick={() => { setMobileMenuOpen(false); logout(); }} className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                     <KontoIcon className="size-5" />
                     <span>Sign out</span>
                   </button>
