@@ -6,7 +6,7 @@ import { connectDB } from "./db";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes";
-import uploadRoutes from "./routes/uploads";
+import uploadRoutes from "./routes/uploadsPresign";
 import adminRoutes from "./routes/admin";
 
 const app = express();
