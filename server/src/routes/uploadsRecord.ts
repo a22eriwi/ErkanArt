@@ -33,3 +33,5 @@ router.post("/uploads/record", requireAuth, requireApproved, async (req: AuthReq
     res.status(500).json({ error: "Server error" });
   }
 });
+
+export default router;
