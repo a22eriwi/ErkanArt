@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes";
 import uploadRoutes from "./routes/uploadsPresign";
+import uploadRecord from "./routes/uploadsRecord";
 import adminRoutes from "./routes/admin";
 
 const app = express();
@@ -26,6 +27,7 @@ connectDB();
 
 app.use("/api", authRoutes);
 app.use("/api", uploadRoutes);
+app.use("/api", uploadRecord);
 app.use("/api", adminRoutes);
 
 const PORT = Number(process.env.PORT) || 4000;
