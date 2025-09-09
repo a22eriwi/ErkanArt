@@ -3,11 +3,13 @@ import { useAuth } from "../Components/authContext"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import UploadButton from "../Components/uploadButton";
+import { Upload } from "../Components/Upload";
 
 export default function Profile() {
   const { user, isLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"saved" | "paintings" | "photographs">("saved");
+  const [activeTab, setActiveTab] = useState<"favorites" | "paintings" | "photographs">("favorites");
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -22,26 +24,40 @@ export default function Profile() {
 
         {/* Tabs */}
         <div className="flex gap-2 justify-center mt-5">
-          <button onClick={() => setActiveTab("saved")} className={`px-4 py-3 text-sm font-semibold rounded-md
-          ${activeTab === "saved" ? "underline decoration-2 underline-offset-10" :"dark:hover:bg-gray-800 hover:bg-gray-200/70"}`}>
-            Saved
+          <button onClick={() => setActiveTab("favorites")} className={`px-4 py-3 text-sm font-semibold rounded-md
+          ${activeTab === "favorites" ? "underline decoration-2 underline-offset-10" : "dark:hover:bg-gray-800 hover:bg-gray-200/70"}`}>
+            Favorites
           </button>
 
           <button onClick={() => setActiveTab("paintings")} className={`px-4 py-3 text-sm font-semibold rounded-md
-          ${activeTab === "paintings" ? "underline decoration-2 underline-offset-10" :"dark:hover:bg-gray-800 hover:bg-gray-200/70"}`}>
+          ${activeTab === "paintings" ? "underline decoration-2 underline-offset-10" : "dark:hover:bg-gray-800 hover:bg-gray-200/70"}`}>
             Paintings
           </button>
 
           <button onClick={() => setActiveTab("photographs")} className={`px-4 py-3 text-sm font-semibold rounded-md
-          ${activeTab === "photographs" ? "underline decoration-2 underline-offset-10" :"dark:hover:bg-gray-800 hover:bg-gray-200/70"}`}>
+          ${activeTab === "photographs" ? "underline decoration-2 underline-offset-10" : "dark:hover:bg-gray-800 hover:bg-gray-200/70"}`}>
             Photographs
           </button>
         </div>
 
-        <div className="mt-10">
-          {activeTab === "saved" && <p>saved</p>}
-          {activeTab === "paintings" && <p>paintings</p>}
-          {activeTab === "photographs" && <p>photographs</p>}
+        <div className="mt-10 text-center">
+          {activeTab === "favorites" &&
+            <div>
+              <p>Favorites</p>
+            </div>
+          }
+          {activeTab === "paintings" &&
+            <div>
+              <div className="flex justify-center items-center">
+                <UploadButton onClick={Upload} />
+              </div>
+            </div>
+          }
+          {activeTab === "photographs" &&
+            <div>
+              <UploadButton onClick={Upload} />
+            </div>
+          }
         </div>
       </div>
     </div>
