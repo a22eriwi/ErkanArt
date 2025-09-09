@@ -27,7 +27,7 @@ router.post(
 
       // create unique key for this user
       const userId = req.user.id;
-      const key = `users/${userId}/${nanoid(16)}.${ext}`;
+      const key = `users/${userId}/${nanoid(5)}.${ext}`;
 
       const cmd = new PutObjectCommand({
         Bucket: R2_BUCKET,
