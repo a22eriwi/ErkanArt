@@ -3,7 +3,6 @@ import { useAuth } from "../Components/authContext"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import UploadButton from "../Components/uploadButton";
 import { Upload } from "../Components/Upload";
 
 export default function Profile() {
@@ -48,14 +47,12 @@ export default function Profile() {
           }
           {activeTab === "paintings" &&
             <div>
-              <div className="flex justify-center items-center">
-                <UploadButton onClick={Upload} />
-              </div>
+              <Upload type="painting" />
             </div>
           }
           {activeTab === "photographs" &&
             <div>
-              <UploadButton onClick={Upload} />
+              <Upload type="photograph" />
             </div>
           }
         </div>
