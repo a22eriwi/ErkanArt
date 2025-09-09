@@ -1,4 +1,4 @@
-// server/src/routes/uploads.ts
+// server/src/routes/uploadsPresign.ts
 
 import { Router } from "express";
 import { requireAuth, requireApproved, AuthRequest } from "../middleware/auth";
@@ -16,6 +16,7 @@ const UploadSchema = z.object({
   ext: z.enum(["jpg", "jpeg", "png", "webp"]),
 });
 
+// POST /api/uploads/presign
 router.post(
   "/uploads/presign",
   requireAuth,
