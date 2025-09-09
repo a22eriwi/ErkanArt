@@ -20,10 +20,12 @@ router.post("/uploads/record", requireAuth, requireApproved, async (req: AuthReq
       description,
       type,      // painting or photograph
       fileKey,   // returned from uploadPresign
-      owner: req.user.id,
+      owner: req.user.id, //user id from mongoDB 
     });
 
     await upload.save();
+
+    await upload.populate("owner", "firstName lastName");
 
     res.json(upload);
   } catch (err) {
