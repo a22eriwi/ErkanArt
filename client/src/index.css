@@ -2,13 +2,45 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
+  /* Light mode autofill */
+  .light input:-webkit-autofill,
+  .light input:-webkit-autofill:hover,
+  .light input:-webkit-autofill:focus,
+  .light input:-webkit-autofill:active {
+    -webkit-text-fill-color: #0c4a6e !important; /* text-sky-950 */
+    caret-color: #0c4a6e !important;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+
+  /* Dark mode autofill */
+  .dark input:-webkit-autofill,
+  .dark input:-webkit-autofill:hover,
+  .dark input:-webkit-autofill:focus,
+  .dark input:-webkit-autofill:active {
+    -webkit-text-fill-color: #ffffff !important; /* text-white */
+    caret-color: #ffffff !important;
+    transition: background-color 9999s ease-in-out 0s;
+  }
+
+  /* Firefox */
+  .light input:-moz-autofill {
+    -moz-text-fill-color: #0c4a6e !important;
+    caret-color: #0c4a6e !important;
+  }
+
+  .dark input:-moz-autofill {
+    -moz-text-fill-color: #ffffff !important;
+    caret-color: #ffffff !important;
+  }
+}
+
 :root {
   font-family: "Gothic A1", sans-serif;
   font-weight: 400;
   font-style: normal;
 }
 
-button:hover{
-  cursor:pointer;
+button:hover {
+  cursor: pointer;
 }
-
