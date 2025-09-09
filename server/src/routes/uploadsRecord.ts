@@ -18,8 +18,8 @@ router.post("/uploads/record", requireAuth, requireApproved, async (req: AuthReq
     const upload = new Upload({
       title,
       description,
-      type,      // "painting" or "photograph"
-      fileKey,   // returned from presign
+      type,      // painting or photograph
+      fileKey,   // returned from uploadPresign
       owner: req.user.id,
     });
 
