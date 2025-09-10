@@ -27,7 +27,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
       if (!res.ok) {
         setMessage(data.error || "Registration failed");
       } else {
-        setMessage(data.message || "Registration successful! Wait for approval.");
+        setMessage(data.message);
       }
     } catch (err) {
       console.error(err);
