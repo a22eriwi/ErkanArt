@@ -30,8 +30,6 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
         body: JSON.stringify({ ext, contentType }),
       });
 
-      console.log(res);
-
       if (!res.ok) throw new Error("Failed to get presigned URL");
 
       const { url, key } = await res.json();
@@ -54,14 +52,14 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
           "Authorization": `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          title: file.name,
-          description: "",
+          title: title,
+          description: description,
           type, // "painting" or "photograph"
           fileKey: key,
         }),
       });
 
-      setStatus("Upload complete!");
+      setStatus("Upload successful!");
     } catch (err: any) {
       console.error(err);
       setStatus("Upload failed: " + err.message);
@@ -71,11 +69,11 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
   return (
     <div className="space-y-4">
 
-      <div className="flex justify-center gap-10">
+      <div className="justify-center gap-8 grid grid-cols-1 sm:grid-cols-4">
 
         {/* img input */}
         <div
-          className="relative flex flex-col items-center justify-center w-full rounded-md outline-2 outline-dashed
+          className="relative flex flex-col col-span-2 items-center justify-center rounded-md outline-2 outline-dashed
            outline-gray-400 dark:outline-gray-600 bg-white dark:bg-gray-800/50 cursor-pointer hover:outline-sky-500"
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
@@ -86,9 +84,9 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
           }}
         >
           <AddBox className="size-8 text-gray-500 dark:text-gray-300" />
-          <p className=" text-gray-500 dark:text-gray-400 mt-2">
-            Drag & drop or click to upload {type}
-          </p>
+          <span className=" text-gray-500 dark:text-gray-400 mt-2">
+            Choose a file or drag and drop it here
+          </span>
 
           {/* Hidden file input that covers the whole div */}
           <input
@@ -99,7 +97,7 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
           />
         </div>
 
-        <div className="text-left">
+        <div className="text-left col-span-2">
           {/* Title input */}
           <label htmlFor="title">
             Title
@@ -109,8 +107,8 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder={`Add a title`}
-            className="m-auto w-100 mb-5 mt-1 dark:bg-gray-800/50 bg-white block rounded-md px-3 py-2 outline-1
+            placeholder={`Add a title (required)`}
+            className="m-auto w-full mb-5 mt-1 dark:bg-gray-800/50 bg-white block rounded-md px-3 py-2 outline-1
              outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500"
           />
 
@@ -122,7 +120,7 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Add a description"
+            placeholder="Add a description (optional)"
             rows={5}
             className="w-full mt-1 dark:bg-gray-800/50 bg-white block rounded-md px-3 py-2 outline-1 outline-gray-300
              dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 resize-none"
@@ -134,10 +132,10 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
       {/* upload button */}
       <button
         onClick={handleUpload}
-        hidden={!file}
-        className="m-auto px-4 py-2 bg-sky-600 text-white rounded hover:bg-sky-700 disabled:opacity-50 flex items-center justify-center gap-2"
+        disabled={!file || !title}
+        className="btn btn-primary mt-3"
       >
-        Upload {type}
+        Publish {type}
       </button>
       {status && <p>{status}</p>}
     </div>
