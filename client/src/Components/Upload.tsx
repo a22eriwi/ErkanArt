@@ -6,15 +6,11 @@ import AddBox from "../assets/addBox.svg?react";
 
 export function Upload({ type }: { type: "painting" | "photograph" }) {
   const API_URL = import.meta.env.VITE_API_URL;
-  const { user, accessToken } = useAuth();
+  const { accessToken } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-
-  if (!user?.isApproved) {
-    return <p>Your account is awaiting approval. You cannot upload yet.</p>;
-  }
 
   async function handleUpload() {
     if (!file || !accessToken) return;

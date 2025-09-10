@@ -47,12 +47,20 @@ export default function Profile() {
           }
           {activeTab === "paintings" &&
             <div>
-              <Upload type="painting" />
+              {user?.isApproved ? (
+                <Upload type="painting" />
+              ) : (
+                <p>Your account is awaiting approval. You cannot upload yet.</p>
+              )}
             </div>
           }
           {activeTab === "photographs" &&
             <div>
-              <Upload type="photograph" />
+              {user?.isApproved ? (
+                <Upload type="photograph" />
+              ) : (
+                <p>Your account is awaiting approval. You cannot upload yet.</p>
+              )}
             </div>
           }
         </div>
