@@ -83,7 +83,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
                 Sign up
               </button>
             </div>
-            {message && <p className="text-center text-sm mt-4">{message}</p>}
+            {message && <p className="text-center text-sm mt-2">{message}</p>}
           </form>
 
           <p className="mt-8 text-center text-sm">
