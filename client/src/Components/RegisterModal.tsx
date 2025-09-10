@@ -79,7 +79,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
             </div>
 
             <div>
-              <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-500 dark:hover:bg-indigo-400 px-3 py-2 text-sm font-semibold text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
+              <button type="submit" className=" w-full btn btn-primary">
                 Sign up
               </button>
             </div>
@@ -88,7 +88,7 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
 
           <p className="mt-8 text-center text-sm">
             Already have an account?{" "}
-            <button onClick={onSwitchToLogin} className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
+            <button onClick={onSwitchToLogin} className="text-button">
               Sign in
             </button>
           </p>
