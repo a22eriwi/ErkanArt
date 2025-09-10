@@ -53,9 +53,9 @@ router.post("/register", async (req, res) => {
     });
     await user.save();
 
-    res.json({ message: "User registered, waiting for approval." });
+    res.json({ message: "User registered succesfully!" });
   } catch (err) {
-    console.error("Register error:", err);
+    console.error("Registration error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
