@@ -48,23 +48,23 @@ const handleSubmit = async (e: React.FormEvent) => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="mt-2 mb-4">
               <input placeholder="Email Address" id="email" name="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
+                className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-sky-500" />
             </div>
 
             <div>
               <div>
                 <input placeholder="Password" id="password" name="password" type="password" required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)}
-                  className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
+                  className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-sky-500" />
               </div>
               <div className="text-sm mt-2.5">
-                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
+                <a href="#" className="text-button">
                   Forgot password?
                 </a>
               </div>
             </div>
 
             <div>
-              <button type="submit" className="flex w-full justify-center rounded-md bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-500 dark:hover:bg-indigo-400 px-3 py-2 text-sm font-semibold text-white focus:outline-2 focus:outline-offset-2 focus:outline-indigo-500">
+              <button type="submit" className="w-full btn btn-primary">
                 Sign in
               </button>
             </div>
@@ -72,7 +72,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           <p className="mt-8 text-center text-sm">
             Don’t have an account?{" "}
-            <button onClick={onSwitchToRegister} className="font-semibold text-indigo-600 hover:text-indigo-500 dark:text-indigo-500 dark:hover:text-indigo-400">
+            <button onClick={onSwitchToRegister} className="text-button ">
               Sign up
             </button>
           </p>
