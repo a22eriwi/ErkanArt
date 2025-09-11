@@ -161,7 +161,7 @@ export default function Header({ onOpenLogin }: HeaderProps) {
         <DialogPanel
           transition
           className="fixed inset-y-0 right-0 z-50 w-[280px] bg-gray-100 dark:bg-gray-900 dark:text-white text-sky-950 p-6 overflow-y-auto h-screen transform transition-transform duration-150 ease-in data-[closed]:translate-x-full 
-          border-l-1 border-gray-400 dark:border-gray-700">
+          border-l-1 border-gray-300 dark:border-gray-800">
           <div className="flex items-center justify-between pb-4">
             <button onClick={() => setTheme(isDark ? "light" : "dark")} className=" relative lg:flex h-8 w-18 items-center rounded group">
               <div className="flex justify-center items-center">
