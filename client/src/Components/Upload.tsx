@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useAuth } from "../Components/authContext";
-import AddBox from "../assets/addBox.svg?react";
+import UploadIcon from "../assets/uploadIcon.svg?react";
 
 export function Upload({ type }: { type: "painting" | "photograph" }) {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -69,12 +69,13 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
   return (
     <div className="space-y-4">
 
-      <div className="justify-center gap-8 grid grid-cols-1 sm:grid-cols-4">
+      <div className="flex justify-center flex-col col-span-2 m-auto max-w-sm sm:max-w-lg text-sm">
 
         {/* img input */}
+        <div className="flex justify-center">
         <div
-          className="relative flex flex-col col-span-2 items-center justify-center rounded-md outline-2 outline-dashed
-           outline-gray-400 dark:outline-gray-600 bg-white dark:bg-gray-800/50 cursor-pointer hover:outline-sky-500"
+          className="relative flex flex-col col-span-2 items-center justify-center outline-dashed
+           cursor-pointer p-10 h-[300px] w-full sm:w-xs text-input"
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault();
@@ -83,7 +84,7 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
             }
           }}
         >
-          <AddBox className="size-8 text-gray-500 dark:text-gray-300" />
+          <UploadIcon className="size-8 text-gray-500 dark:text-gray-400" />
           <span className=" text-gray-500 dark:text-gray-400 mt-2">
             Choose a file or drag and drop it here
           </span>
@@ -96,10 +97,11 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
             className="absolute inset-0 opacity-0 cursor-pointer"
           />
         </div>
+        </div>
 
-        <div className="text-left col-span-2">
+        <div className="text-left mt-5">
           {/* Title input */}
-          <label htmlFor="title">
+          <label htmlFor="title" className="text-sm">
             Title
           </label>
           <input
@@ -107,23 +109,21 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder={`Add a title (required)`}
-            className="m-auto w-full mb-5 mt-1 dark:bg-gray-800/50 bg-white block rounded-md px-3 py-2 outline-1
-             outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500"
+            placeholder={`(Required)`}
+            className="text-input px-3 py-4 mb-4"
           />
 
           {/* Description input */}
-          <label htmlFor="description">
+          <label htmlFor="description" className="text-sm">
             Description
           </label>
           <textarea
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Add a description (optional)"
-            rows={5}
-            className="w-full mt-1 dark:bg-gray-800/50 bg-white block rounded-md px-3 py-2 outline-1 outline-gray-300
-             dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500 resize-none"
+            placeholder="(Optional)"
+            rows={4}
+            className="text-input px-3 py-4"
           ></textarea>
         </div>
       </div>
@@ -133,7 +133,7 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
       <button
         onClick={handleUpload}
         disabled={!file || !title}
-        className="btn btn-primary mt-3"
+        className="btn btn-primary mt-5"
       >
         Publish {type}
       </button>
