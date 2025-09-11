@@ -73,59 +73,60 @@ export function Upload({ type }: { type: "painting" | "photograph" }) {
 
         {/* img input */}
         <div className="flex justify-center">
-        <div
-          className="relative flex flex-col col-span-2 items-center justify-center outline-dashed
-           cursor-pointer p-10 h-[300px] w-full sm:w-xs text-input"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => {
-            e.preventDefault();
-            if (e.dataTransfer.files?.[0]) {
-              setFile(e.dataTransfer.files[0]);
-            }
-          }}
-        >
-          <UploadIcon className="size-8 text-gray-500 dark:text-gray-400" />
-          <span className=" text-gray-500 dark:text-gray-400 mt-2">
-            Choose a file or drag and drop it here
-          </span>
+          <div className="relative flex flex-col items-center justify-center outline-dashed cursor-pointer p-10 h-[300px] w-xs text-input"
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              e.preventDefault();
+              if (e.dataTransfer.files?.[0]) {
+                setFile(e.dataTransfer.files[0]);
+              }
+            }}
+          >
+            <UploadIcon className="size-8 text-gray-500 dark:text-gray-400" />
+            <span className=" text-gray-500 dark:text-gray-400 mt-2">
+              Choose a file or drag and drop it here
+            </span>
 
-          {/* Hidden file input that covers the whole div */}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            onChange={(e) => setFile(e.target.files?.[0] || null)}
-            className="absolute inset-0 opacity-0 cursor-pointer"
-          />
-        </div>
+            {/* Hidden file input that covers the whole div */}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+              className="absolute inset-0 opacity-0 cursor-pointer"
+            />
+          </div>
         </div>
 
-        <div className="text-left mt-5">
-          {/* Title input */}
-          <label htmlFor="title" className="text-sm">
-            Title
-          </label>
-          <input
-            id="title"
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder={`(Required)`}
-            className="text-input px-3 py-4 mb-4"
-          />
+        <div className="flex justify-center mt-5">
+          <div className="text-left w-xs sm:w-full sm:-m-0">
+            {/* Title input */}
+            <label htmlFor="title" className="text-sm">
+              Title
+            </label>
+            <input
+              id="title"
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder={`(Required)`}
+              className="text-input px-3 py-4 mb-4"
+            />
 
-          {/* Description input */}
-          <label htmlFor="description" className="text-sm">
-            Description
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="(Optional)"
-            rows={4}
-            className="text-input px-3 py-4"
-          ></textarea>
+            {/* Description input */}
+            <label htmlFor="description" className="text-sm">
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="(Optional)"
+              rows={4}
+              className="text-input px-3 py-4"
+            ></textarea>
+          </div>
         </div>
+        
       </div>
 
 
