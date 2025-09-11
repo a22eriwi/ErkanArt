@@ -60,22 +60,22 @@ export default function RegisterModal({ isOpen, onClose, onSwitchToLogin }: { is
 
             <div className="mb-4">
               <input placeholder="First Name" id="fname" name="fname" type="text" required value={firstName} onChange={(e) => setFirstName(e.target.value)}
-                className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
+                className="text-input px-3 py-2.5" />
             </div>
 
             <div className="mb-4">
               <input placeholder="Last Name" id="sname" name="sname" type="text" required value={lastName} onChange={(e) => setLastName(e.target.value)}
-                className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
+                className="text-input px-3 py-2.5" />
             </div>
 
             <div className="mb-4">
               <input placeholder="Email Address" id="email" name="email" type="email" required autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
+                className="text-input px-3 py-2.5" />
             </div>
 
             <div>
               <input placeholder="Password" id="password" name="password" type="password" required autoComplete="new-password"  value={password} onChange={(e) => setPassword(e.target.value)}
-                className="dark:bg-gray-800/50 bg-white block w-full rounded-md px-3 py-2.5 text-base outline-1 outline-gray-300 dark:outline-gray-700 placeholder:text-gray-500 focus:outline-2 focus:outline-indigo-500" />
+                className="text-input px-3 py-2.5" />
             </div>
 
             <div>
