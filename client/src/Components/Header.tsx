@@ -2,11 +2,17 @@
 
 import { useTheme } from "../useTheme";
 import { NavLink } from "react-router-dom";
+
 import DarkIcon from "../assets/darkMode.svg?react";
 import LightIcon from "../assets/lightMode.svg?react";
 import KontoIcon from "../assets/konto.svg?react";
 import SearchIcon from "../assets/searchIcon.svg?react";
 import Logga from "../assets/logga.svg?react";
+import SignOutIcon from "../assets/signOutIcon.svg?react";
+import PaintingIcon from "../assets/paintingIcon.svg?react";
+import PhotoIcon from "../assets/photoIcon.svg?react";
+import FavoriteIcon from "../assets/favoriteIcon.svg?react";
+
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react'
@@ -28,7 +34,7 @@ export default function Header({ onOpenLogin }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const isDark = theme === "dark";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const { isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-30 bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-white mb-6 lg:border-none border-b-1 border-gray-300 dark:border-gray-800">
@@ -66,25 +72,33 @@ export default function Header({ onOpenLogin }: HeaderProps) {
                 <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5" />
               </MenuButton>
 
-              <MenuItems
-                transition
-                className="absolute right-0 z-10 mt-2 w-60 p-3 text-sm origin-top-right font-semibold rounded-xl bg-gray-100 dark:bg-gray-900 shadow-md outline-1 outline-gray-200 dark:outline-gray-800
-       transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in inset-ring-1 dark:inset-ring-white/5 inset-ring-gray-200/20"
-              >
-                <div className="py-1">
+              <MenuItems transition className="absolute right-0 z-10 mt-1 w-60 p-3 text-sm origin-top-right font-semibold rounded-xl bg-gray-100 dark:bg-gray-900 shadow-md outline-1 outline-gray-200 dark:outline-gray-800
+                transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in inset-ring-1 dark:inset-ring-white/5 inset-ring-gray-200/20">
+                <div>
+                  <div className="p-3 pt-0">
+                    <h1 className="pt-3 border-b-1 border-gray-300 dark:border-gray-800 font-semibold text-lg pb-3"> {user?.firstName} {user?.lastName}</h1>
+                  </div>
                   <MenuItem>
-                    <NavLink
-                      to="/Profile"
-                      className="rounded-md block px-2.5 py-2 data-focus:bg-gray-200 dark:data-focus:bg-gray-800 data-focus:outline-hidden"
-                    >
-                      Profile
+                    <NavLink to="/profile/favorites" className={({ isActive }) => `mb-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                      <FavoriteIcon />
+                      Favorites
                     </NavLink>
                   </MenuItem>
                   <MenuItem>
-                    <button
-                      onClick={logout}
-                      className="rounded-md block w-full px-2.5 py-2 text-left data-focus:bg-gray-200 dark:data-focus:bg-gray-800 data-focus:outline-hidden"
-                    >
+                    <NavLink to="/profile/paintings" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                      <PaintingIcon />
+                      My paintings
+                    </NavLink>
+                  </MenuItem>
+                  <MenuItem>
+                    <NavLink to="/profile/photographs" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                      <PhotoIcon />
+                      My photographs
+                    </NavLink>
+                  </MenuItem>
+                  <MenuItem>
+                    <button onClick={logout} className="mt-2 rounded-md p-3 gap-3 flex w-full items-center data-focus:bg-gray-200 dark:data-focus:bg-gray-800 data-focus:outline-hidden">
+                      <SignOutIcon />
                       Sign out
                     </button>
                   </MenuItem>
@@ -111,44 +125,24 @@ export default function Header({ onOpenLogin }: HeaderProps) {
         {/* Big nav */}
         <PopoverGroup className="hidden lg:flex">
           <div className="lg:flex lg:gap-x-10">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `relative text-sm/6 font-semibold after:absolute after:left-0 after:translate-y-[13px] after:bottom-0 after:h-[2px]
-                after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
-              }>
+            <NavLink to="/" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+                after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Home
             </NavLink>
-            <NavLink
-              to="/Paintings"
-              className={({ isActive }) =>
-                `relative text-sm/6 font-semibold after:absolute after:left-0 after:translate-y-[13px] after:bottom-0 after:h-[2px]
-                after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
-              }>
+            <NavLink to="/Paintings" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+                after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Paintings
             </NavLink>
-            <NavLink
-              to="/Photography"
-              className={({ isActive }) =>
-                `relative text-sm/6 font-semibold after:absolute after:left-0 after:translate-y-[13px] after:bottom-0 after:h-[2px]
-               after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
-              }>
+            <NavLink to="/Photography" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+               after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Photography
             </NavLink>
-            <NavLink
-              to="/Artists"
-              className={({ isActive }) =>
-                `relative text-sm/6 font-semibold after:absolute after:left-0 after:translate-y-[13px] after:bottom-0 after:h-[2px]
-              after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
-              }>
+            <NavLink to="/Artists" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+              after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Artists
             </NavLink>
-            <NavLink
-              to="/About"
-              className={({ isActive }) =>
-                `relative text-sm/6 font-semibold after:absolute after:left-0 after:translate-y-[13px] after:bottom-0 after:h-[2px]
-              after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`
-              }>
+            <NavLink to="/About" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+              after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               About
             </NavLink>
           </div>
@@ -158,12 +152,10 @@ export default function Header({ onOpenLogin }: HeaderProps) {
       {/* Mobile menu open*/}
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-40 bg-black/40 data-[closed]:opacity-0" />
-        <DialogPanel
-          transition
-          className="fixed inset-y-0 right-0 z-50 w-[280px] bg-gray-100 dark:bg-gray-900 dark:text-white text-sky-950 p-6 overflow-y-auto h-screen transform transition-transform duration-150 ease-in data-[closed]:translate-x-full 
-          border-l-1 border-gray-300 dark:border-gray-800">
+        <DialogPanel transition className="fixed inset-y-0 right-0 z-50 w-[280px] bg-gray-100 dark:bg-gray-900 dark:text-white text-sky-950 p-6 overflow-y-auto h-screen 
+        transform transition-transform duration-150 ease-in data-[closed]:translate-x-full border-l-1 border-gray-300 dark:border-gray-800">
           <div className="flex items-center justify-between pb-4">
-            <button onClick={() => setTheme(isDark ? "light" : "dark")} className=" relative lg:flex h-8 w-18 items-center rounded group">
+            <button onClick={() => setTheme(isDark ? "light" : "dark")} className=" relative lg:flex h-8 w-18 -mx-1 items-center rounded group">
               <div className="flex justify-center items-center">
                 <span className={`absolute left-1 h-8 w-8 rounded-full inset-shadow-sm inset-shadow-indigo-400 duration-400 ease-in-out transform transition-transform ${isDark ? "translate-x-8" : "-translate-x-0"}`} />
                 <LightIcon className="absolute left-2 size-6 " />
@@ -177,36 +169,51 @@ export default function Header({ onOpenLogin }: HeaderProps) {
           </div>
           <div className="flow-root">
             <div className="space-y-2 py-6 border-b-1 border-gray-300 dark:border-gray-800">
-              <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
+              <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Home
               </NavLink>
-              <NavLink to="/Paintings" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
+              <NavLink to="/Paintings" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Paintings
               </NavLink>
-              <NavLink to="/Photography" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
+              <NavLink to="/Photography" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Photography
               </NavLink>
-              <NavLink to="/Artists" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
+              <NavLink to="/Artists" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Artists
               </NavLink>
-              <NavLink to="/About" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
+              <NavLink to="/About" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 About
               </NavLink>
             </div>
             <div className="-mx-3 space-y-2 py-6">
               {!isLoggedIn && (
-                <button onClick={() => { setMobileMenuOpen(false); onOpenLogin(); }} className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                <button onClick={() => { setMobileMenuOpen(false); onOpenLogin(); }} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                   <KontoIcon className="size-5" />
                   <span>Sign in</span>
                 </button>
               )}
               {isLoggedIn && (
                 <>
-                  <NavLink to="/Profile" onClick={() => { setMobileMenuOpen(false) }} className="block px-3 py-2 text-sm/6 font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md">
-                    Profile
+                  <div className="flex w-full items-center gap-3 p-3 text-md font-semibold">
+                    <KontoIcon className="size-7" /><h1> {user?.firstName} {user?.lastName}</h1>
+                  </div>
+
+                  <NavLink to="/profile/favorites" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                    <FavoriteIcon />
+                    Favorites
                   </NavLink>
-                  <button onClick={() => { setMobileMenuOpen(false); logout(); }} className="flex w-full items-center gap-2 px-3 py-2 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
-                    <KontoIcon className="size-5" />
+
+                  <NavLink to="/profile/paintings" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                    <PaintingIcon />
+                    My paintings
+                  </NavLink>
+
+                  <NavLink to="/profile/photographs" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                    <PhotoIcon />
+                    My photographs
+                  </NavLink>
+                  <button onClick={() => { setMobileMenuOpen(false); logout(); }} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                    <SignOutIcon />
                     <span>Sign out</span>
                   </button>
                 </>
