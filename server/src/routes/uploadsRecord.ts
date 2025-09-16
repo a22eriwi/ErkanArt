@@ -1,5 +1,4 @@
 // server/src/routes/uploadsRecord.ts
-
 import Upload from "../models/Upload";
 import { Router } from "express";
 import { requireAuth, requireApproved, AuthRequest } from "../middleware/auth";

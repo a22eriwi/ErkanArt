@@ -1,5 +1,4 @@
 // server/src/models/Upload.ts
-
 import { Schema, model } from "mongoose";
 
 const uploadSchema = new Schema({

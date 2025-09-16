@@ -1,5 +1,4 @@
 // server/src/utils/utils.ts
-
 import jwt from "jsonwebtoken";
 import { Response } from "express";
 
