@@ -54,7 +54,7 @@ export default function Header({ onOpenLogin }: HeaderProps) {
 
           {isLoggedIn && (
             <Menu as="div" className="relative inline-block">
-              <MenuButton className="group inline-flex w-full justify-center gap-x-1.5 rounded-md outline-1 outline-gray-300 dark:outline-gray-800 px-3 py-2 text-sm font-semibold dark:inset-ring-1 dark:inset-ring-white/5
+              <MenuButton className="group inline-flex w-full justify-center gap-x-1.5 rounded-md outline-1 outline-gray-300 dark:outline-gray-800 px-3 py-2 text-sm font-semibold dark:inset-ring-1 dark:inset-ring-white/5 transition-colors
             hover:outline-gray-400 dark:hover:outline-gray-600
             aria-expanded:outline-gray-400
             dark:aria-expanded:outline-gray-600"
