@@ -1,5 +1,4 @@
 // client/src/Components/Header.tsx
-
 import { useTheme } from "../useTheme";
 import { NavLink } from "react-router-dom";
 
@@ -17,16 +16,8 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react'
 import { useAuth } from "./authContext";
-import {
-  Dialog,
-  DialogPanel,
-  PopoverGroup,
-} from '@headlessui/react'
-import {
-  Bars3Icon,
-  XMarkIcon,
-} from '@heroicons/react/24/outline'
-'use client'
+import { Dialog, DialogPanel, PopoverGroup } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon} from '@heroicons/react/24/outline'
 
 type HeaderProps = { onOpenLogin: () => void };
 
@@ -79,19 +70,19 @@ export default function Header({ onOpenLogin }: HeaderProps) {
                     <h1 className="pt-3 border-b-1 border-gray-300 dark:border-gray-800 font-semibold text-lg pb-3"> {user?.firstName} {user?.lastName}</h1>
                   </div>
                   <MenuItem>
-                    <NavLink to="/profile/favorites" className={({ isActive }) => `mb-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                    <NavLink to="/profile/Favorites" className={({ isActive }) => `mb-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
                       <FavoriteIcon />
                       Favorites
                     </NavLink>
                   </MenuItem>
                   <MenuItem>
-                    <NavLink to="/profile/paintings" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                    <NavLink to="/profile/myPaintings" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
                       <PaintingIcon />
                       My paintings
                     </NavLink>
                   </MenuItem>
                   <MenuItem>
-                    <NavLink to="/profile/photographs" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                    <NavLink to="/profile/myPhotographs" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
                       <PhotoIcon />
                       My photographs
                     </NavLink>
@@ -195,20 +186,20 @@ export default function Header({ onOpenLogin }: HeaderProps) {
               {isLoggedIn && (
                 <>
                   <div className="flex w-full items-center gap-3 p-3 text-md font-semibold">
-                    <KontoIcon className="size-7" /><h1> {user?.firstName} {user?.lastName}</h1>
+                    <KontoIcon className="size-6" /><h1> {user?.firstName} {user?.lastName}</h1>
                   </div>
 
-                  <NavLink to="/profile/favorites" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                  <NavLink to="/profile/Favorites" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                     <FavoriteIcon />
                     Favorites
                   </NavLink>
 
-                  <NavLink to="/profile/paintings" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                  <NavLink to="/profile/myPaintings" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                     <PaintingIcon />
                     My paintings
                   </NavLink>
 
-                  <NavLink to="/profile/photographs" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                  <NavLink to="/profile/myPhotographs" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                     <PhotoIcon />
                     My photographs
                   </NavLink>
