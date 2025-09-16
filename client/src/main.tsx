@@ -30,9 +30,9 @@ const router = createBrowserRouter([
         element: <Profile />, // renders <Outlet />
         children: [
           { index: true, element: <Favorites /> }, // default subpage
-          { path: "favorites", element: <Favorites /> },
-          { path: "paintings", element: <MyPaintings /> },
-          { path: "photographs", element: <MyPhotographs /> },
+          { path: "Favorites", element: <Favorites /> },
+          { path: "myPaintings", element: <MyPaintings /> },
+          { path: "myPhotographs", element: <MyPhotographs /> },
         ],
       },
     ],
