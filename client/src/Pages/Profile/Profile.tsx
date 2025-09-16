@@ -1,12 +1,14 @@
 // client/src/pages/Profile.tsx
 import { useAuth } from "../../Components/authContext"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-
+import UploadModal from "../../Components/UploadModal";
 
 export default function Profile() {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const [uploadOpen, setUploadOpen] = useState(false);
+  const [uploadType, setUploadType] = useState<"painting" | "photograph">("painting");
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -14,9 +16,20 @@ export default function Profile() {
     }
   }, [isLoggedIn, navigate]);
 
+  function openUpload(type: "painting" | "photograph") {
+    setUploadType(type);
+    setUploadOpen(true);
+  }
+
   return (
     <div className="lg:max-w-[900px] xl:max-w-[1100px] m-auto px-5 mt-10">
-      <Outlet /> {/* Renders Favorites, MyPaintings, or MyPhotographs */}
+      <Outlet context={{ openUpload }} /> {/* Renders Favorites, MyPaintings, or MyPhotographs */}
+
+      <UploadModal
+        type={uploadType}
+        isOpen={uploadOpen}
+        onClose={() => setUploadOpen(false)}
+      />
     </div>
   )
 }
