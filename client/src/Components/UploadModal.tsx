@@ -1,15 +1,28 @@
 // client/src/Components/UploadModal.tsx  
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "./authContext";
 import UploadIcon from "../assets/uploadIcon.svg?react";
+import DeleteIcon from "../assets/deleteIcon.svg?react";
 
 export default function UploadModal({ type, isOpen, onClose, }: { type: "painting" | "photograph"; isOpen: boolean; onClose: () => void; }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const { accessToken } = useAuth();
   const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+
+  // Create preview URL on file change
+  useEffect(() => {
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
+      return () => URL.revokeObjectURL(url); // cleanup
+    } else {
+      setPreviewUrl(null);
+    }
+  }, [file]);
 
   if (!isOpen) return null;
 
@@ -78,32 +91,30 @@ export default function UploadModal({ type, isOpen, onClose, }: { type: "paintin
         </button>
 
         <div className="flex justify-center flex-col m-auto sm:max-w-lg text-sm">
-
-          {/* img input */}
-          <div className="flex justify-center">
-            <div className="relative flex flex-col items-center justify-center outline-dashed cursor-pointer p-10 h-[300px] w-xs text-input"
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                e.preventDefault();
-                if (e.dataTransfer.files?.[0]) {
-                  setFile(e.dataTransfer.files[0]);
-                }
-              }}
-            >
-              <UploadIcon className="size-8 text-gray-500 dark:text-gray-400" />
-              <span className=" text-gray-500 dark:text-gray-400 mt-2">
-                Choose a file or drag and drop it here
-              </span>
-
-              {/* Hidden file input that covers the whole div */}
-              <input
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
+          {previewUrl ? (
+            <>
+              <div className="flex justify-center">
+                <div className="max-w-xs relative">
+                  <img src={previewUrl} alt="Preview" className="rounded-md h-full w-full object-contain" />
+                  <div onClick={() => setFile(null)} className="btn btn-accent absolute top-2 right-2 px-1 py-1 cursor-pointer">
+                  <DeleteIcon className="size-5"/>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="flex justify-center">
+              <div className="relative flex flex-col items-center justify-center outline-dashed cursor-pointer p-10 h-[300px] w-xs text-input"
+                onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files?.[0]) { setFile(e.dataTransfer.files[0]); } }}>
+                <UploadIcon className="size-8 text-gray-500 dark:text-gray-400" />
+                <span className=" text-gray-500 dark:text-gray-400 mt-2">
+                  Choose a file or drag and drop it here
+                </span>
+                {/* Hidden file input that covers the whole div */}
+                <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => setFile(e.target.files?.[0] || null)} className="absolute inset-0 opacity-0 cursor-pointer" />
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="flex justify-center mt-5">
             <div className="text-left w-full ">
@@ -111,27 +122,14 @@ export default function UploadModal({ type, isOpen, onClose, }: { type: "paintin
               <label htmlFor="title" className="text-sm">
                 Title
               </label>
-              <input
-                id="title"
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder={`(Required)`}
-                className="text-input px-3 py-4 mb-4"
-              />
+              <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={`(Required)`} className="text-input px-3 py-4 mb-4" />
 
               {/* Description input */}
               <label htmlFor="description" className="text-sm">
                 Description
               </label>
-              <textarea
-                id="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="(Optional)"
-                rows={4}
-                className="text-input px-3 py-4"
-              ></textarea>
+              <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="(Optional)" rows={4} className="text-input px-3 py-4">
+              </textarea>
             </div>
           </div>
           {/* upload button */}
@@ -140,7 +138,6 @@ export default function UploadModal({ type, isOpen, onClose, }: { type: "paintin
           </button>
           {status && <p>{status}</p>}
         </div>
-
       </div>
     </div>
   );
