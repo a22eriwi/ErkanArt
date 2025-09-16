@@ -1,5 +1,4 @@
 // client/src/Components/LoginModal.tsx
-
 import { useState } from "react";
 import { useAuth } from "./authContext";
 import KontoIcon from "../assets/konto.svg?react";
@@ -27,7 +26,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   return (
     <div onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5">
       {/* Modal container */}
-      <div className="relative w-full max-w-lg px-6 sm:px-14 py-12 sm:py-18 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-lg">
+      <div className="relative w-full max-w-lg px-8 sm:px-14 py-16 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-lg dark:shadow-xl/30">
 
         {/* Close button */}
         <button onClick={onClose} className="text-lg absolute top-3 right-3">
