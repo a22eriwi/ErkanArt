@@ -4,11 +4,17 @@ import { useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
 import UploadModal from "../../Components/UploadModal";
 
+export type ProfileContext = {
+  openUpload: (type: "painting" | "photograph") => void;
+  setOnUploadSuccess: (cb: (() => void) | null) => void;
+};
+
 export default function Profile() {
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploadType, setUploadType] = useState<"painting" | "photograph">("painting");
+   const [onUploadSuccess, setOnUploadSuccess] = useState<(() => void) | null>(null);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -23,12 +29,15 @@ export default function Profile() {
 
   return (
     <div className="lg:max-w-[900px] xl:max-w-[1100px] m-auto px-5 mt-10">
-      <Outlet context={{ openUpload }} /> {/* Renders Favorites, MyPaintings, or MyPhotographs */}
+      <Outlet context={{ openUpload, setOnUploadSuccess }} /> {/* Renders Favorites, MyPaintings, or MyPhotographs */}
 
       <UploadModal
         type={uploadType}
         isOpen={uploadOpen}
         onClose={() => setUploadOpen(false)}
+             onSuccess={() => {
+            if (onUploadSuccess) onUploadSuccess(); // trigger refetch
+          }}
       />
     </div>
   )
