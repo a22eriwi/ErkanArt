@@ -5,6 +5,7 @@ import { requireAuth, requireAdmin } from "../middleware/auth";
 
 const router = Router();
 
+//POST api/admin/users/:id/approve
 router.post("/admin/users/:id/approve", requireAuth, requireAdmin, async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
