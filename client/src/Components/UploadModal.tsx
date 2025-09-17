@@ -4,7 +4,7 @@ import { useAuth } from "./authContext";
 import UploadIcon from "../assets/uploadIcon.svg?react";
 import DeleteIcon from "../assets/deleteIcon.svg?react";
 
-export default function UploadModal({ type, isOpen, onClose, }: { type: "painting" | "photograph"; isOpen: boolean; onClose: () => void; }) {
+export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { type: "painting" | "photograph"; isOpen: boolean; onClose: () => void;  onSuccess?: () => void;  }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const { accessToken } = useAuth();
   const [file, setFile] = useState<File | null>(null);
@@ -73,7 +73,17 @@ export default function UploadModal({ type, isOpen, onClose, }: { type: "paintin
         }),
       });
 
+      // If upload successful Close modal + reset state
       setStatus("Upload successful!");
+      if (onSuccess) onSuccess();
+      setTimeout(() => {
+        setFile(null);
+        setTitle("");
+        setDescription("");
+        setStatus(null);
+        onClose();
+      }, 600);
+
     } catch (err: any) {
       console.error(err);
       setStatus("Upload failed: " + err.message);
@@ -81,23 +91,24 @@ export default function UploadModal({ type, isOpen, onClose, }: { type: "paintin
   }
 
   return (
-    <div onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5">
+    <div onMouseDown={(e) => { if (e.target === e.currentTarget) { onClose(); setFile(null); setTitle(""); setDescription(""); } }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5">
       {/* Modal container */}
-      <div className="relative w-full max-w-[600px] px-8 py-12 sm:px-14 sm:py-16 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-xl dark:shadow-xl/30">
+      <div className="relative w-full max-w-[550px] px-8 py-8 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-xl dark:shadow-xl/30">
 
+        <h1 className="font-semibold text-center text-2xl">Publish {type}</h1>
         {/* Close button */}
-        <button onClick={onClose} className="text-lg absolute top-3 right-3">
+        <button onClick={() => { onClose(); setFile(null); setTitle(""); setDescription(""); }} className="text-lg absolute top-3 right-3">
           ✕
         </button>
 
-        <div className="flex justify-center flex-col m-auto sm:max-w-lg text-sm">
+        <div className="flex justify-center flex-col m-auto sm:max-w-lg text-sm mt-6">
           {previewUrl ? (
             <>
               <div className="flex justify-center">
                 <div className="max-w-xs relative">
                   <img src={previewUrl} alt="Preview" className="rounded-md h-full w-full object-contain" />
                   <div onClick={() => setFile(null)} className="btn btn-accent absolute top-2 right-2 px-1 py-1 cursor-pointer">
-                  <DeleteIcon className="size-5"/>
+                    <DeleteIcon className="size-5" />
                   </div>
                 </div>
               </div>
@@ -117,7 +128,7 @@ export default function UploadModal({ type, isOpen, onClose, }: { type: "paintin
           )}
 
           <div className="flex justify-center mt-5">
-            <div className="text-left w-full ">
+            <div className="text-left w-full">
               {/* Title input */}
               <label htmlFor="title" className="text-sm">
                 Title
@@ -132,11 +143,20 @@ export default function UploadModal({ type, isOpen, onClose, }: { type: "paintin
               </textarea>
             </div>
           </div>
-          {/* upload button */}
-          <button onClick={handleUpload} disabled={!file || !title} className="btn btn-primary mt-5 w-full">
-            Publish {type}
-          </button>
-          {status && <p>{status}</p>}
+          <div className="flex justify-between mt-6">
+            <div className="flex items-center">
+              {status && <p className="text-center text-emerald-400 font-semibold">{status}</p>}
+            </div>
+            <div className="flex gap-3">
+              {/* upload button & cancel button */}
+              <button onClick={() => { onClose(); setFile(null); setTitle(""); setDescription(""); }} className="btn btn-accent w-full max-w-[80px]">
+                Cancel
+              </button>
+              <button onClick={handleUpload} disabled={!file || !title} className="btn btn-primary w-full max-w-[80px]">
+                Publish
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
