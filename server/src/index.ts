@@ -6,8 +6,9 @@ import { connectDB } from "./db";
 import cookieParser from "cookie-parser";
 
 import authRoutes from "./routes/authRoutes";
-import uploadRoutes from "./routes/uploadsPresign";
+import uploadPresign from "./routes/uploadsPresign";
 import uploadRecord from "./routes/uploadsRecord";
+import uploadedRoute from "./routes/uploaded";
 import adminRoutes from "./routes/admin";
 
 const app = express();
@@ -26,8 +27,9 @@ app.use(cors({
 connectDB();
 
 app.use("/api", authRoutes);
-app.use("/api", uploadRoutes);
+app.use("/api", uploadPresign);
 app.use("/api", uploadRecord);
+app.use("/api", uploadedRoute);
 app.use("/api", adminRoutes);
 
 const PORT = Number(process.env.PORT) || 4000;
