@@ -1,10 +1,11 @@
 // client/src/Components/UploadModal.tsx  
 import { useState, useEffect } from "react";
+import imageCompression from "browser-image-compression";
 import { useAuth } from "./authContext";
 import UploadIcon from "../assets/uploadIcon.svg?react";
 import DeleteIcon from "../assets/deleteIcon.svg?react";
 
-export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { type: "painting" | "photograph"; isOpen: boolean; onClose: () => void;  onSuccess?: () => void;  }) {
+export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { type: "painting" | "photograph"; isOpen: boolean; onClose: () => void; onSuccess?: () => void; }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const { accessToken } = useAuth();
   const [file, setFile] = useState<File | null>(null);
@@ -26,69 +27,94 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
 
   if (!isOpen) return null;
 
-  async function handleUpload() {
-    if (!file || !accessToken) return;
-
-    try {
-      const ext = file.name.split(".").pop()?.toLowerCase();
-      const contentType = file.type;
-
-      // Get presigned URL
-      const res = await fetch(`${API_URL}/uploads/presign`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({ ext, contentType }),
-      });
-
-      if (!res.ok) throw new Error("Failed to get presigned URL");
-
-      const { url, key } = await res.json();
-
-      // Upload to R2
-      const uploadRes = await fetch(url, {
-        method: "PUT",
-        headers: { "Content-Type": contentType },
-        body: file,
-      });
-
-      if (!uploadRes.ok) throw new Error("Failed to upload file to R2");
-
-      // Save record in MongoDB
-      await fetch(`${API_URL}/uploads/record`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${accessToken}`,
-        },
-        body: JSON.stringify({
-          title: title,
-          description: description,
-          type, // "painting" or "photograph"
-          fileKey: key,
-        }),
-      });
-
-      // If upload successful Close modal + reset state
-      setStatus("Upload successful!");
-      if (onSuccess) onSuccess();
-      setTimeout(() => {
-        setFile(null);
-        setTitle("");
-        setDescription("");
-        setStatus(null);
-        onClose();
-      }, 600);
-
-    } catch (err: any) {
-      console.error(err);
-      setStatus("Upload failed: " + err.message);
-    }
+  // helper
+  async function resizeImage(file: File, maxWidthOrHeight: number, quality = 0.8) {
+    return await imageCompression(file, {
+      maxWidthOrHeight,
+      initialQuality: quality,
+      useWebWorker: true,
+    });
   }
+
+  async function handleUpload() {
+  if (!file || !accessToken) return;
+
+  try {
+    // Resize
+    const thumbnail = await resizeImage(file, 400, 0.7);
+    const medium = await resizeImage(file, 1200, 0.8);
+    const original = file;
+
+    // Get all presigned URLs in one request
+    const res = await fetch(`${API_URL}/uploads/presign`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        ext: file.name.split(".").pop()?.toLowerCase(),
+        contentType: file.type,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed to get presigned URLs");
+    const { keys, urls } = await res.json();
+
+    // Upload each version
+    await Promise.all([
+      fetch(urls.original, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: original,
+      }),
+      fetch(urls.medium, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: medium,
+      }),
+      fetch(urls.thumbnail, {
+        method: "PUT",
+        headers: { "Content-Type": file.type },
+        body: thumbnail,
+      }),
+    ]);
+
+    // Save record in MongoDB
+    await fetch(`${API_URL}/uploads/record`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        title,
+        description,
+        type,
+        fileKey: keys.original,
+        sizes: {
+          medium: keys.medium,
+          thumbnail: keys.thumbnail,
+        },
+      }),
+    });
+
+    setStatus("Upload successful!");
+    if (onSuccess) onSuccess();
+
+    setTimeout(() => {
+      setFile(null);
+      setTitle("");
+      setDescription("");
+      setStatus(null);
+      onClose();
+    }, 600);
+  } catch (err: any) {
+    console.error(err);
+    setStatus("Upload failed: " + err.message);
+  }
+}
 
   return (
     <div onMouseDown={(e) => { if (e.target === e.currentTarget) { onClose(); setFile(null); setTitle(""); setDescription(""); } }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5">
@@ -145,7 +171,14 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
           </div>
           <div className="flex justify-between mt-6">
             <div className="flex items-center">
-              {status && <p className="text-center text-emerald-400 font-semibold">{status}</p>}
+              {status && (
+                <p
+                  className={`text-center font-semibold ${status.includes("successful") ? "text-emerald-400" : "text-red-500"
+                    }`}
+                >
+                  {status}
+                </p>
+              )}
             </div>
             <div className="flex gap-3">
               {/* upload button & cancel button */}
