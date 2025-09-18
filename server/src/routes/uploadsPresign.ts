@@ -9,7 +9,6 @@ import { z } from "zod";
 
 const router = Router();
 
-// validate request body
 const UploadSchema = z.object({
   contentType: z.enum(["image/jpeg", "image/png", "image/webp"]),
   ext: z.enum(["jpg", "jpeg", "png", "webp"]),
@@ -23,22 +22,32 @@ router.post(
   async (req: AuthRequest, res) => {
     try {
       const { contentType, ext } = UploadSchema.parse(req.body);
-
-      // create unique key for this user
       const userId = req.user.id;
-      const key = `users/${userId}/${nanoid(5)}.${ext}`;
 
-      const cmd = new PutObjectCommand({
-        Bucket: R2_BUCKET,
-        Key: key,
-        ContentType: contentType,
-        CacheControl: "public, max-age=31536000, immutable",
-      });
+      // Base key for this image
+      const baseKey = `users/${userId}/${nanoid(6)}`;
 
-      // presigned PUT url, expires in 4 min
-      const url = await getSignedUrl(r2, cmd, { expiresIn: 240 });
+      // All versions with predictable suffixes
+      const keys = {
+        original: `${baseKey}.${ext}`,
+        medium: `${baseKey}-medium.${ext}`,
+        thumbnail: `${baseKey}-thumbnail.${ext}`,
+      };
 
-      res.json({ url, key });
+      // Generate presigned PUT URLs
+      const urls: Record<string, string> = {};
+      for (const [size, key] of Object.entries(keys)) {
+        const cmd = new PutObjectCommand({
+          Bucket: R2_BUCKET,
+          Key: key,
+          ContentType: contentType,
+          CacheControl: "public, max-age=31536000, immutable",
+        });
+
+        urls[size] = await getSignedUrl(r2, cmd, { expiresIn: 240 });
+      }
+
+      res.json({ keys, urls });
     } catch (err) {
       console.error("Presign error:", err);
       res.status(400).json({ error: "Invalid request" });
