@@ -21,8 +21,11 @@ router.get("/uploads/uploaded", requireAuth, async (req: AuthRequest, res: Respo
       title: u.title,
       description: u.description,
       type: u.type,
-      fileKey: u.fileKey,
-      url: `${process.env.R2_PUBLIC_URL}/${u.fileKey}`,
+      url: `${process.env.R2_PUBLIC_URL}/${u.fileKey}`,  // original
+      sizes: {
+        thumbnail: u.sizes?.thumbnail ? `${process.env.R2_PUBLIC_URL}/${u.sizes.thumbnail}` : null,
+        medium: u.sizes?.medium ? `${process.env.R2_PUBLIC_URL}/${u.sizes.medium}` : null,
+      },
     }));
 
     res.json(response);
