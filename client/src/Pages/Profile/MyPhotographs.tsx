@@ -57,33 +57,41 @@ export default function MyPhotographs() {
                 <>
                     <div className="flex justify-center items-center gap-3 mb-6">
                         <h1 className="font-semibold text-2xl">My photographs</h1>
-                        <button
-                            onClick={() => openUpload("photograph")}
-                            className="p-2 flex items-center gap-1 btn btn-secondary"
-                        >
+                        <button onClick={() => openUpload("photograph")} className="p-2 flex items-center gap-1 btn btn-secondary">
                             <AddIcon className="size-6" />
                         </button>
                     </div>
 
                     {/* Uploaded photos */}
                     {uploads.length > 0 ? (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {uploads.map((u) => {
-                                const imgSrc = u.sizes?.thumbnail || u.url; // Prioritize thumbnail
-                                return (
-                                    <div key={u._id} className="rounded-lg overflow-hidden shadow-md bg-white dark:bg-gray-800">
-                                        <img src={imgSrc} alt={u.title} className="w-full h-48 object-cover" loading="lazy" />
-                                        <div className="p-2">
-                                            <h2 className="font-semibold text-sm">{u.title}</h2>
-                                            {u.description && (
-                                                <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                    {u.description}
-                                                </p>
-                                            )}
+                        <div className="flex justify-center">
+                            <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-5">
+                                {uploads.map((u) => {
+                                    const imgSrc = u.sizes?.thumbnail || u.url;
+                                    return (
+                                        <div
+                                            key={u._id}
+                                            className="mb-6 break-inside-avoid block transform transition-transform duration-300 hover:scale-105 dark:bg-gray-800 bg-white shadow-lg rounded-lg overflow-hidden"
+                                            style={{ marginInline: "auto" }}
+                                        >
+                                            <img
+                                                src={imgSrc}
+                                                alt={u.title}
+                                                loading="lazy"
+                                                className="h-auto object-cover w-[200px] sm:w-[250px]"
+                                            />
+                                            <section className="py-3 px-4">
+                                                <h3 className="mt-1 text-sm font-semibold">{u.title}</h3>
+                                                {u.description && (
+                                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                        {u.description}
+                                                    </p>
+                                                )}
+                                            </section>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </div>
                         </div>
                     ) : (
                         <p className="text-center text-gray-500 dark:text-gray-400">
