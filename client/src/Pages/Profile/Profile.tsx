@@ -1,8 +1,8 @@
 // client/src/pages/Profile.tsx
-import { useAuth } from "../../Components/authContext"
+import { useAuth } from "../../components/authContext"
 import { useEffect, useState } from "react";
 import { useNavigate, Outlet } from "react-router-dom";
-import UploadModal from "../../Components/UploadModal";
+import UploadModal from "../../components/uploadModal";
 
 export type ProfileContext = {
   openUpload: (type: "painting" | "photograph") => void;

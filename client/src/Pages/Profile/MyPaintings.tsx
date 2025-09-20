@@ -1,5 +1,5 @@
-// client/src/Pages/Profile/MyPaintings.tsx
-import { useAuth } from "../../Components/authContext"
+// client/src/Pages/Profile/myPaintings.tsx
+import { useAuth } from "../../components/authContext"
 import AddIcon from "../../assets/AddIcon.svg?react";
 import { useOutletContext } from "react-router-dom";
 
