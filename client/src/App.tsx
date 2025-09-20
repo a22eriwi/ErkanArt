@@ -1,10 +1,10 @@
 // src/App.tsx
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
-import Header from "./Components/Header";
-import LoginModal from "./Components/LoginModal";
-import RegisterModal from "./Components/RegisterModal";
-import { AuthProvider } from "./Components/authContext";
+import Header from "./components/header";
+import LoginModal from "./components/loginModal";
+import RegisterModal from "./components/registerModal";
+import { AuthProvider } from "./components/authContext";
 
 export default function App() {
   const [loginOpen, setLoginOpen] = useState(false);
