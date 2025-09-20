@@ -1,7 +1,7 @@
 // server/src/routes/uploadsUploaded.ts
 import { Router, Response } from "express";
-import { requireAuth, AuthRequest } from "../middleware/auth";
-import Upload from "../models/Upload";
+import { requireAuth, AuthRequest } from "../../middleware/auth";
+import Upload from "../../models/Upload";
 
 const router = Router();
 
