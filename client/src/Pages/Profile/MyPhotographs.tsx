@@ -1,9 +1,11 @@
-// client/src/Pages/Profile/MyPhotographs.tsx
-import { useAuth } from "../../Components/authContext"
+// client/src/Pages/Profile/myPhotographs.tsx
+import { useAuth } from "../../components/authContext"
 import AddIcon from "../../assets/AddIcon.svg?react";
 import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
-import type { ProfileContext } from "./Profile";
+import type { ProfileContext } from "./profile";
+import UpdateModal from "../../components/updateModal";
+import EditIcon from "../../assets/editIcon.svg?react";
 
 type Upload = {
     _id: string;
@@ -22,6 +24,8 @@ export default function MyPhotographs() {
     const { user, accessToken } = useAuth();
     const { openUpload, setOnUploadSuccess } = useOutletContext<ProfileContext>();
     const [uploads, setUploads] = useState<Upload[]>([]);
+    const [selectedUpload, setSelectedUpload] = useState<Upload | null>(null);
+    const [updateOpen, setUpdateOpen] = useState(false);
 
     async function fetchUploads() {
         try {
@@ -65,21 +69,17 @@ export default function MyPhotographs() {
                     {/* Uploaded photos */}
                     {uploads.length > 0 ? (
                         <div className="flex justify-center">
-                            <div className="columns-2 sm:columns-3 lg:columns-4 xl:columns-5 gap-5">
+                            <div className="columns-2 sm:columns-3 lg:columns-4 gap-5">
                                 {uploads.map((u) => {
                                     const imgSrc = u.sizes?.thumbnail || u.url;
                                     return (
-                                        <div
-                                            key={u._id}
-                                            className="mb-6 break-inside-avoid block transform transition-transform duration-300 hover:scale-105 dark:bg-gray-800 bg-white shadow-lg rounded-lg overflow-hidden"
-                                            style={{ marginInline: "auto" }}
-                                        >
-                                            <img
-                                                src={imgSrc}
-                                                alt={u.title}
-                                                loading="lazy"
-                                                className="h-auto object-cover w-[200px] sm:w-[250px]"
-                                            />
+                                        <div key={u._id} className="mb-6 block dark:bg-gray-800 bg-white shadow-lg rounded-lg overflow-hidden relative group hover:scale-105 transition-transform duration-300">
+                                            <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover w-[200px] sm:w-[250px]" />
+                                            {/* Overlay buttons */}
+                                            <button onClick={() => { setSelectedUpload(u); setUpdateOpen(true); }} className="btn btn-secondary absolute transition-transform duration-150
+                                            top-2 right-2 px-1 py-1 cursor-pointer opacity-0 group-hover:opacity-100">
+                                                <EditIcon className="size-5" />
+                                            </button>
                                             <section className="py-3 px-4">
                                                 <h3 className="mt-1 text-sm font-semibold">{u.title}</h3>
                                                 {u.description && (
@@ -98,6 +98,14 @@ export default function MyPhotographs() {
                             You haven’t uploaded any photographs yet.
                         </p>
                     )}
+                    {/* Update Modal */}
+                    <UpdateModal
+                        isOpen={updateOpen}
+                        onClose={() => setUpdateOpen(false)}
+                        upload={selectedUpload}
+                        API_URL={API_URL}
+                        onSuccess={fetchUploads}
+                    />
                 </>
             ) : (
                 <p>Your account is awaiting approval. You cannot upload yet.</p>
