@@ -1,6 +1,6 @@
 // server/src/models/Upload.ts
 import { Schema, model, Document, Types } from "mongoose";
-import { IUser } from "./User";
+import { IUser } from "./user";
 
 export interface IUpload extends Document {
   title: string;
