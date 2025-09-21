@@ -14,7 +14,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const [uploadOpen, setUploadOpen] = useState(false);
   const [uploadType, setUploadType] = useState<"painting" | "photograph">("painting");
-   const [onUploadSuccess, setOnUploadSuccess] = useState<(() => void) | null>(null);
+  const [onUploadSuccess, setOnUploadSuccess] = useState<(() => void) | null>(null);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -35,9 +35,9 @@ export default function Profile() {
         type={uploadType}
         isOpen={uploadOpen}
         onClose={() => setUploadOpen(false)}
-             onSuccess={() => {
-            if (onUploadSuccess) onUploadSuccess(); // trigger refetch
-          }}
+        onSuccess={() => {
+          if (onUploadSuccess) onUploadSuccess(); // trigger refetch
+        }}
       />
     </div>
   )
