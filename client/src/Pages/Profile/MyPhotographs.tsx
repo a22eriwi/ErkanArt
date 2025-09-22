@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { ProfileContext } from "./profile";
 import UpdateModal from "../../components/updateModal";
 import EditIcon from "../../assets/editIcon.svg?react";
+import Masonry from "react-masonry-css";
 
 type Upload = {
     _id: string;
@@ -29,7 +30,7 @@ export default function MyPhotographs() {
 
     async function fetchUploads() {
         try {
-            const res = await fetch(`${API_URL}/uploads/uploaded?type=photograph`, {
+            const res = await fetch(`${API_URL}/uploads?type=photograph`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
@@ -55,6 +56,14 @@ export default function MyPhotographs() {
         return () => setOnUploadSuccess(null);
     }, [accessToken]);
 
+    // Masonry breakpoints
+    const breakpointColumnsObj = {
+        default: 4,
+        1024: 4,
+        850: 3,
+        600: 2,
+    };
+
     return (
         <div>
             {user?.isApproved ? (
@@ -68,31 +77,29 @@ export default function MyPhotographs() {
 
                     {/* Uploaded photos */}
                     {uploads.length > 0 ? (
-                        <div className="flex justify-center">
-                            <div className="columns-2 sm:columns-3 lg:columns-4 gap-5">
-                                {uploads.map((u) => {
-                                    const imgSrc = u.sizes?.thumbnail || u.url;
-                                    return (
-                                        <div key={u._id} className="mb-6 block dark:bg-gray-800 bg-white shadow-lg rounded-lg overflow-hidden relative group hover:scale-105 transition-transform duration-300">
-                                            <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover w-[200px] sm:w-[250px]" />
-                                            {/* Overlay buttons */}
-                                            <button onClick={() => { setSelectedUpload(u); setUpdateOpen(true); }} className="btn btn-secondary absolute transition-transform duration-150
-                                            top-2 right-2 px-1 py-1 cursor-pointer opacity-0 group-hover:opacity-100">
-                                                <EditIcon className="size-5" />
-                                            </button>
-                                            <section className="py-3 px-4">
-                                                <h3 className="mt-1 text-sm font-semibold">{u.title}</h3>
-                                                {u.description && (
-                                                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                                        {u.description}
-                                                    </p>
-                                                )}
-                                            </section>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
+                        <Masonry breakpointCols={breakpointColumnsObj} className="flex w-auto gap-5" columnClassName="flex flex-col gap-5">
+                            {uploads.map((u) => {
+                                const imgSrc = u.sizes?.thumbnail || u.url;
+                                return (
+                                    <div key={u._id} className=" blockshadow-lg rounded-lg overflow-hidden relative group max-w-[250px]">
+                                        <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-75 transition-transform duration-300"/>
+                                        {/* Overlay buttons */}
+                                        <button onClick={() => { setSelectedUpload(u); setUpdateOpen(true); }} className="btn btn-secondary absolute transition-transform duration-150
+                                            top-2 right-2 p-1.5 cursor-pointer opacity-0 group-hover:opacity-100">
+                                            <EditIcon className="size-5" />
+                                        </button>
+                                        <section className="py-3 px-4 cursor-default">
+                                            <h3 className="mt-1 text-sm font-semibold">{u.title}</h3>
+                                            {u.description && (
+                                                <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                                    {u.description}
+                                                </p>
+                                            )}
+                                        </section>
+                                    </div>
+                                );
+                            })}
+                        </Masonry>
                     ) : (
                         <p className="text-center text-gray-500 dark:text-gray-400">
                             You haven’t uploaded any photographs yet.
