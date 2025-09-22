@@ -1,5 +1,5 @@
 // server/src/routes/uploads/update.ts
-import Upload from "../../models/Upload";
+import Upload from "../../models/upload";
 import { Router } from "express";
 import { requireAuth, requireApproved, AuthRequest } from "../../middleware/auth";
 
