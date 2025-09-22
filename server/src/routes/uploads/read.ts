@@ -1,12 +1,13 @@
 // server/src/routes/uploadsUploaded.ts
 import { Router, Response } from "express";
 import { requireAuth, AuthRequest } from "../../middleware/auth";
-import Upload from "../../models/Upload";
+import Upload from "../../models/upload";
+import { IUser } from "../../models/user";
 
 const router = Router();
 
-// GET /api/uploads/uploaded
-router.get("/uploads/uploaded", requireAuth, async (req: AuthRequest, res: Response) => {
+// GET /api/uploads
+router.get("/uploads", requireAuth, async (req: AuthRequest, res: Response) => {
   try {
     const { type } = req.query;
     const userId = req.user.id; // comes from JWT payload
@@ -14,7 +15,9 @@ router.get("/uploads/uploaded", requireAuth, async (req: AuthRequest, res: Respo
     const query: any = { owner: userId };
     if (type) query.type = type;
 
-    const uploads = await Upload.find(query).sort({ createdAt: -1 });
+    const uploads = await Upload.find(query)
+      .sort({ createdAt: -1 })
+      .populate<{ owner: IUser }>("owner", "firstName lastName");
 
     const response = uploads.map((u) => ({
       _id: u._id,
@@ -26,6 +29,7 @@ router.get("/uploads/uploaded", requireAuth, async (req: AuthRequest, res: Respo
         thumbnail: u.sizes?.thumbnail ? `${process.env.R2_PUBLIC_URL}/${u.sizes.thumbnail}` : null,
         medium: u.sizes?.medium ? `${process.env.R2_PUBLIC_URL}/${u.sizes.medium}` : null,
       },
+       owner: u.owner, // populate owner
     }));
 
     res.json(response);
