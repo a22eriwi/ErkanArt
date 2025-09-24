@@ -7,18 +7,7 @@ import type { ProfileContext } from "./profile";
 import UpdateModal from "../../components/updateModal";
 import EditIcon from "../../assets/editIcon.svg?react";
 import Masonry from "react-masonry-css";
-
-type Upload = {
-    _id: string;
-    title: string;
-    description?: string;
-    type: "painting" | "photograph";
-    url: string; // original
-    sizes?: {
-        thumbnail?: string | null;
-        medium?: string | null;
-    };
-};
+import type { Upload } from "../../types/upload";
 
 export default function MyPhotographs() {
     const API_URL = import.meta.env.VITE_API_URL;
@@ -27,16 +16,11 @@ export default function MyPhotographs() {
     const [uploads, setUploads] = useState<Upload[]>([]);
     const [selectedUpload, setSelectedUpload] = useState<Upload | null>(null);
     const [updateOpen, setUpdateOpen] = useState(false);
+    const { apiFetch } = useAuth();
 
     async function fetchUploads() {
         try {
-            const res = await fetch(`${API_URL}/uploads?type=photograph`, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-                credentials: "include",
-            });
+            const res = await apiFetch(`${API_URL}/uploads/user?type=photograph`);
             if (!res.ok) throw new Error("Failed to fetch uploads");
             const data = await res.json();
             setUploads(data);
@@ -81,15 +65,17 @@ export default function MyPhotographs() {
                             {uploads.map((u) => {
                                 const imgSrc = u.sizes?.thumbnail || u.url;
                                 return (
-                                    <div key={u._id} className=" blockshadow-lg rounded-lg overflow-hidden relative group max-w-[250px]">
-                                        <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-75 transition-transform duration-300"/>
-                                        {/* Overlay buttons */}
-                                        <button onClick={() => { setSelectedUpload(u); setUpdateOpen(true); }} className="btn btn-secondary absolute transition-transform duration-150
+                                    <div key={u._id} className=" overflow-hidden relative max-w-[250px] mb-2">
+                                        <div className="group">
+                                            <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-70 transition-transform duration-300 hover:cursor-pointer rounded-lg" />
+                                            {/* Overlay buttons */}
+                                            <button onClick={() => { setSelectedUpload(u); setUpdateOpen(true); }} className="btn btn-secondary absolute
                                             top-2 right-2 p-1.5 cursor-pointer opacity-0 group-hover:opacity-100">
-                                            <EditIcon className="size-5" />
-                                        </button>
-                                        <section className="py-3 px-4 cursor-default">
-                                            <h3 className="mt-1 text-sm font-semibold">{u.title}</h3>
+                                                <EditIcon className="size-5" />
+                                            </button>
+                                        </div>
+                                        <section className="py-2 px-1.5 cursor-default">
+                                            <h3 className="mt-1 text-sm font-semibold italic">{u.title}</h3>
                                             {u.description && (
                                                 <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                                                     {u.description}
