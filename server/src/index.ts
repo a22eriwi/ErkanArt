@@ -11,7 +11,8 @@ import authRoutes from "./routes/auth/authRoutes";
 // routes/uploads
 import uploadsPresignCreate from "./routes/uploads/presign-create";
 import uploadsRecordCreate from "./routes/uploads/record-create";
-import uploadsRead from "./routes/uploads/read";
+import uploadsReadUser from "./routes/uploads/read-user";
+import uploadsReadPublic from "./routes/uploads/read-public";
 import uploadsUpdate from "./routes/uploads/update";
 import uploadsDelete from "./routes/uploads/delete";
 
@@ -39,7 +40,8 @@ app.use("/api", authRoutes);
 // routes/uploads
 app.use("/api", uploadsPresignCreate);
 app.use("/api", uploadsRecordCreate);
-app.use("/api", uploadsRead);
+app.use("/api", uploadsReadUser);
+app.use("/api", uploadsReadPublic);
 app.use("/api", uploadsUpdate);
 app.use("/api", uploadsDelete);
 
