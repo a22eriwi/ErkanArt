@@ -5,7 +5,6 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-
   /* Light mode autofill */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -26,17 +25,6 @@
     /* text-white */
     caret-color: #ffffff !important;
     transition: background-color 9999s ease-in-out 0s;
-  }
-
-  /* Firefox */
-  input:-moz-autofill {
-    -moz-text-fill-color: #0c4a6e !important;
-    caret-color: #0c4a6e !important;
-  }
-
-  .dark input:-moz-autofill {
-    -moz-text-fill-color: #ffffff !important;
-    caret-color: #ffffff !important;
   }
 }
 
