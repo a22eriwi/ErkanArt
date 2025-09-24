@@ -16,6 +16,7 @@ interface AuthContextType {
   accessToken: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
+  apiFetch: (url: string, options?: RequestInit) => Promise<Response>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -47,33 +48,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoggedIn(true);
   }
 
-  async function refresh() {
-    try {
-      const res = await fetch(`${API_URL}/refresh`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        setUser(null);
-        setIsLoggedIn(false);
-        setAccessToken(null);
-        return;
-      }
-
-      const data = await res.json();
-      setAccessToken(data.accessToken);
-      setUser(data.user);
-      setIsLoggedIn(true);
-    }
-    catch (err) {
-      console.error("Refresh failed", err);
-      setUser(null);
-      setIsLoggedIn(false);
-      setAccessToken(null);
-    }
-  }
-
   async function logout() {
     await fetch(`${API_URL}/logout`, {
       method: "POST",
@@ -84,8 +58,71 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAccessToken(null);
   }
 
+  async function refresh(): Promise<string | null> {
+    try {
+      const res = await fetch(`${API_URL}/refresh`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (!res.ok) {
+        setUser(null);
+        setIsLoggedIn(false);
+        setAccessToken(null);
+        return null;
+      }
+
+      const data = await res.json();
+      setAccessToken(data.accessToken);
+      setUser(data.user);
+      setIsLoggedIn(true);
+      return data.accessToken; // ✅ return new token
+    } catch (err) {
+      console.error("Refresh failed", err);
+      setUser(null);
+      setIsLoggedIn(false);
+      setAccessToken(null);
+      return null;
+    }
+  }
+
+  async function apiFetch(url: string, options: RequestInit = {}): Promise<Response> {
+    const headers: Record<string, string> = {};
+
+    if (options.headers) {
+      for (const [key, value] of Object.entries(options.headers)) {
+        headers[key] = value as string;
+      }
+    }
+
+    if (accessToken) {
+      headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+
+    let res = await fetch(url, {
+      ...options,
+      headers,
+      credentials: "include",
+    });
+
+    // If token expired
+    if (res.status === 401) {
+      const newToken = await refresh(); // ✅ get fresh token
+
+      if (newToken) {
+        headers["Authorization"] = `Bearer ${newToken}`; // ✅ use returned token
+        res = await fetch(url, {
+          ...options,
+          headers,
+          credentials: "include",
+        });
+      }
+    }
+
+    return res;
+  }
   return (
-    <AuthContext.Provider value={{ user, isLoggedIn, accessToken, login, logout }}>
+    <AuthContext.Provider value={{ user, isLoggedIn, accessToken, login, logout, apiFetch }}>
       {children}
     </AuthContext.Provider>
   );
