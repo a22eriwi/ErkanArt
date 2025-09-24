@@ -12,6 +12,7 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
   const [status, setStatus] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const { apiFetch } = useAuth();
 
     // Central cleanup for file, title, description & preview
   function clearFileAndState() {
@@ -89,11 +90,10 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
       const original = file; // original file (untouched)
 
       // Get all presigned URLs in one request
-      const res = await fetch(`${API_URL}/uploads/presign`, {
+            const res = await apiFetch(`${API_URL}/uploads/presign`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           ext: file.name.split(".").pop()?.toLowerCase(),
@@ -220,15 +220,9 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
                 </p>
               )}
             </div>
-            <div className="flex gap-3">
-              {/* upload button & cancel button */}
-              <button onClick={() => { clearFileAndState(); onClose(); }} className="btn btn-accent w-full max-w-[80px]">
-                Cancel
-              </button>
               <button onClick={handleUpload} disabled={!file || !title} className="btn btn-primary w-full max-w-[80px]">
                 Publish
               </button>
-            </div>
           </div>
         </div>
       </div>
