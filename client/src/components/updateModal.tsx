@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 interface UpdateModalProps {
     isOpen: boolean;
     onClose: () => void;
-    upload: any; 
+    upload: any;
     API_URL: string;
     onSuccess?: () => void;
 }
@@ -14,6 +14,7 @@ export default function UpdateModal({ isOpen, onClose, upload, API_URL, onSucces
     const { accessToken } = useAuth();
     const [title, setTitle] = useState(upload?.title || "");
     const [description, setDescription] = useState(upload?.description || "");
+    const { apiFetch } = useAuth();
 
     useEffect(() => {
         if (upload) {
@@ -26,11 +27,10 @@ export default function UpdateModal({ isOpen, onClose, upload, API_URL, onSucces
 
     async function handleUpdate() {
         try {
-            const res = await fetch(`${API_URL}/uploads/${upload._id}`, {
+            const res = await apiFetch(`${API_URL}/uploads/${upload._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${accessToken}`,
                 },
                 body: JSON.stringify({ title, description }),
             });
