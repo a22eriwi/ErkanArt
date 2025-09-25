@@ -76,7 +76,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAccessToken(data.accessToken);
       setUser(data.user);
       setIsLoggedIn(true);
-      return data.accessToken; // ✅ return new token
+      return data.accessToken; // return new token
     } catch (err) {
       console.error("Refresh failed", err);
       setUser(null);
@@ -107,10 +107,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // If token expired
     if (res.status === 401) {
-      const newToken = await refresh(); // ✅ get fresh token
+      const newToken = await refresh(); // get fresh token
 
       if (newToken) {
-        headers["Authorization"] = `Bearer ${newToken}`; // ✅ use returned token
+        headers["Authorization"] = `Bearer ${newToken}`; // use returned token
         res = await fetch(url, {
           ...options,
           headers,
