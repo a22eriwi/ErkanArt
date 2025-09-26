@@ -9,6 +9,7 @@ import Home from './pages/home.tsx';
 import Paintings from './pages/paintings.tsx';
 import Photography from "./pages/photography.tsx";
 import Profile from "./pages/profile/profile.tsx";
+import UploadDetailPage from "./components/uploadDetailPage.tsx";
 
 import Favorites from "./pages/profile/favorites.tsx";
 import MyPaintings from "./pages/profile/myPaintings.tsx";
@@ -16,25 +17,24 @@ import MyPhotographs from "./pages/profile/myPhotographs.tsx";
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <App />,
+    path: "/", element: <App />,
     children: [
       { index: true, element: <Home /> },
-      { path: "About", element: <About /> },
-      { path: "Artists", element: <Artists /> },
-      { path: "Paintings", element: <Paintings /> },
-      { path: "Photography", element: <Photography /> },
-        // Profile parent route
+      { path: "about", element: <About /> },
+      { path: "artists", element: <Artists /> },
+      { path: "paintings", element: <Paintings /> },
+      { path: "photography", element: <Photography /> },
+      { path: "uploads/:id", element: <UploadDetailPage/> },
+
+      // Profile parent route
       {
-        path: "profile",
-        element: <Profile />, // renders <Outlet />
+        path: "/:username", element: <Profile />, // renders <Outlet />
         children: [
-          { index: true, element: <Favorites /> }, // default subpage
-          { path: "Favorites", element: <Favorites /> },
-          { path: "myPaintings", element: <MyPaintings /> },
-          { path: "myPhotographs", element: <MyPhotographs /> },
+          { path: "favorites", element: <Favorites /> },
+          { path: "paintings", element: <MyPaintings /> },
+          { path: "photographs", element: <MyPhotographs /> },
         ],
-      },
+      }
     ],
   },
 ]);
