@@ -26,6 +26,10 @@ export default function Header({ onOpenLogin }: HeaderProps) {
   const isDark = theme === "dark";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { user, isLoggedIn, logout } = useAuth();
+  
+  function toSlug(firstName: string, lastName: string) {
+  return `${firstName}-${lastName}`.toLowerCase();
+}
 
   return (
     <header className="sticky top-0 z-30 bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-white mb-6 lg:border-none border-b-1 border-gray-300 dark:border-gray-800">
@@ -70,19 +74,19 @@ export default function Header({ onOpenLogin }: HeaderProps) {
                     <h1 className="pt-3 border-b-1 border-gray-300 dark:border-gray-800 font-semibold text-lg pb-3"> {user?.firstName} {user?.lastName}</h1>
                   </div>
                   <MenuItem>
-                    <NavLink to="/profile/Favorites" className={({ isActive }) => `mb-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                    <NavLink to={`/${toSlug(user!.firstName, user!.lastName)}/favorites`} className={({ isActive }) => `mb-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
                       <FavoriteIcon />
                       Favorites
                     </NavLink>
                   </MenuItem>
                   <MenuItem>
-                    <NavLink to="/profile/myPaintings" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                    <NavLink to={`/${toSlug(user!.firstName, user!.lastName)}/paintings`} className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
                       <PaintingIcon />
                       My paintings
                     </NavLink>
                   </MenuItem>
                   <MenuItem>
-                    <NavLink to="/profile/myPhotographs" className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
+                    <NavLink to={`/${toSlug(user!.firstName, user!.lastName)}/photographs`} className={({ isActive }) => `my-2 rounded-md p-3 gap-3 flex w-full items-center ${isActive ? "bg-gray-200 dark:bg-gray-800" : "hover:bg-gray-200 dark:hover:bg-gray-800"}`}>
                       <PhotoIcon />
                       My photographs
                     </NavLink>
@@ -120,19 +124,19 @@ export default function Header({ onOpenLogin }: HeaderProps) {
                 after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Home
             </NavLink>
-            <NavLink to="/Paintings" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/paintings" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
                 after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Paintings
             </NavLink>
-            <NavLink to="/Photography" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/photography" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
                after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Photography
             </NavLink>
-            <NavLink to="/Artists" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/artists" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
               after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Artists
             </NavLink>
-            <NavLink to="/About" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/about" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
               after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               About
             </NavLink>
@@ -163,16 +167,16 @@ export default function Header({ onOpenLogin }: HeaderProps) {
               <NavLink to="/" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Home
               </NavLink>
-              <NavLink to="/Paintings" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
+              <NavLink to="/paintings" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Paintings
               </NavLink>
-              <NavLink to="/Photography" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
+              <NavLink to="/photography" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Photography
               </NavLink>
-              <NavLink to="/Artists" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
+              <NavLink to="/artists" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 Artists
               </NavLink>
-              <NavLink to="/About" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
+              <NavLink to="/about" onClick={() => setMobileMenuOpen(false)} className=" -mx-3 p-3 text-sm font-semibold hover:bg-gray-200 hover:dark:bg-gray-800 rounded-md block">
                 About
               </NavLink>
             </div>
@@ -189,17 +193,17 @@ export default function Header({ onOpenLogin }: HeaderProps) {
                     <KontoIcon className="size-6" /><h1> {user?.firstName} {user?.lastName}</h1>
                   </div>
 
-                  <NavLink to="/profile/Favorites" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                  <NavLink to={`/${toSlug(user!.firstName, user!.lastName)}/favorites`} onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                     <FavoriteIcon />
                     Favorites
                   </NavLink>
 
-                  <NavLink to="/profile/myPaintings" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                  <NavLink to={`/${toSlug(user!.firstName, user!.lastName)}/paintings`} onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                     <PaintingIcon />
                     My paintings
                   </NavLink>
 
-                  <NavLink to="/profile/myPhotographs" onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
+                  <NavLink to={`/${toSlug(user!.firstName, user!.lastName)}/photographs`} onClick={() => setMobileMenuOpen(false)} className="flex w-full items-center gap-3 p-3 text-sm font-semibold hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md">
                     <PhotoIcon />
                     My photographs
                   </NavLink>
