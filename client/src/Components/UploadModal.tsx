@@ -14,7 +14,7 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
   const [description, setDescription] = useState("");
   const { apiFetch } = useAuth();
 
-    // Central cleanup for file, title, description & preview
+  // Central cleanup for file, title, description & preview
   function clearFileAndState() {
     setFile(null);         // triggers useEffect -> revokes preview URL
     setTitle("");
@@ -90,7 +90,7 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
       const original = file; // original file (untouched)
 
       // Get all presigned URLs in one request
-            const res = await apiFetch(`${API_URL}/uploads/presign`, {
+      const res = await apiFetch(`${API_URL}/uploads/presign`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -220,9 +220,9 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
                 </p>
               )}
             </div>
-              <button onClick={handleUpload} disabled={!file || !title} className="btn btn-primary w-full max-w-[80px]">
-                Publish
-              </button>
+            <button onClick={handleUpload} disabled={!file || !title} className="btn btn-primary w-full max-w-[80px]">
+              Publish
+            </button>
           </div>
         </div>
       </div>
