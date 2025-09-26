@@ -13,8 +13,10 @@ import uploadsPresignCreate from "./routes/uploads/presign-create";
 import uploadsRecordCreate from "./routes/uploads/record-create";
 import uploadsReadUser from "./routes/uploads/read-user";
 import uploadsReadPublic from "./routes/uploads/read-public";
+import uploadsId from "./routes/uploads/read-id";
 import uploadsUpdate from "./routes/uploads/update";
 import uploadsDelete from "./routes/uploads/delete";
+
 
 // routes/admin
 import adminRoutes from "./routes/admin/admin";
@@ -44,6 +46,7 @@ app.use("/api", uploadsReadUser);
 app.use("/api", uploadsReadPublic);
 app.use("/api", uploadsUpdate);
 app.use("/api", uploadsDelete);
+app.use("/api", uploadsId);
 
 // routes/admin
 app.use("/api", adminRoutes);
