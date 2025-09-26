@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Masonry from "react-masonry-css";
 import type { Upload } from "../types/upload";
 import { useAuth } from "../components/authContext";
+import { NavLink } from "react-router-dom";
 
 export default function Paintings() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -47,7 +48,9 @@ export default function Paintings() {
             return (
               <div key={u._id} className=" overflow-hidden relative max-w-[250px]">
                 <div className="group">
-                  <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-70 transition-transform duration-300 hover:cursor-pointer rounded-lg" />
+                  <NavLink to={`/uploads/${u._id}`}>
+                    <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-70 transition-transform duration-300 hover:cursor-pointer rounded-lg" />
+                  </NavLink>
                   {/* Overlay buttons */}
 
                 </div>
