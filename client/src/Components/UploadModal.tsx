@@ -85,7 +85,7 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
 
     try {
       // Resize
-      const thumbnail = await resizeImage(file, 250); // thumbnail has 250px width
+      const thumbnail = await resizeImage(file, 400); // thumbnail has 400px width
       const medium = await resizeImage(file, 1200);  // medium has up to 1200px
       const original = file; // original file (untouched)
 
