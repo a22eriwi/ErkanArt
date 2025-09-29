@@ -31,13 +31,13 @@ export default function Paintings() {
   // Masonry breakpoints
   const breakpointColumnsObj = {
     default: 4,
-    1024: 4,
-    850: 3,
-    600: 2,
+    1710: 4,
+    1400: 3,
+    800: 2,
   };
 
   return (
-    <div className="lg:max-w-[900px] xl:max-w-[1100px] m-auto px-5 mt-10">
+    <div className="lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 mt-10">
 
       {/* Uploaded paintings */}
       {uploads.length > 0 && (
@@ -46,7 +46,7 @@ export default function Paintings() {
             const imgSrc = u.sizes?.thumbnail || u.url;
             const ownerName = u.owner ? `${u.owner.firstName} ${u.owner.lastName}` : "Unknown";
             return (
-              <div key={u._id} className=" overflow-hidden relative max-w-[250px]">
+              <div key={u._id} className=" overflow-hidden relative mb-2">
                 <div className="group">
                   <NavLink to={`/uploads/${u._id}`}>
                     <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-70 transition-transform duration-300 hover:cursor-pointer rounded-lg" />

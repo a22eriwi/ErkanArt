@@ -43,9 +43,9 @@ export default function MyPhotographs() {
     // Masonry breakpoints
     const breakpointColumnsObj = {
         default: 4,
-        1024: 4,
-        850: 3,
-        600: 2,
+        1710: 4,
+        1400: 3,
+        800: 2,
     };
 
     return (
@@ -65,7 +65,7 @@ export default function MyPhotographs() {
                             {uploads.map((u) => {
                                 const imgSrc = u.sizes?.thumbnail || u.url;
                                 return (
-                                    <div key={u._id} className=" overflow-hidden relative max-w-[250px] mb-2">
+                                    <div key={u._id} className=" overflow-hidden relative mb-2">
                                         <div className="group">
                                             <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-70 transition-transform duration-300 hover:cursor-pointer rounded-lg" />
                                             {/* Overlay buttons */}
