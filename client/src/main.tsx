@@ -9,7 +9,7 @@ import Home from './pages/home.tsx';
 import Paintings from './pages/paintings.tsx';
 import Photography from "./pages/photography.tsx";
 import Profile from "./pages/profile/profile.tsx";
-import UploadDetailPage from "./components/uploadDetailPage.tsx";
+import UploadDetailPage from "./components/detailPage.tsx";
 
 import Favorites from "./pages/profile/favorites.tsx";
 import MyPaintings from "./pages/profile/myPaintings.tsx";
