@@ -5,6 +5,7 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
+
   /* Light mode autofill */
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -64,6 +65,8 @@ button:hover {
   --color-btn-accent: var(--color-rose-500);
   --color-btn-accent-hover-light: var(--color-rose-600);
   --color-btn-accent-hover-dark: var(--color-rose-400);
+
+  --breakpoint-3xl: 121rem;
 }
 
 /* Component styles */
@@ -89,8 +92,7 @@ button:hover {
   }
 
   .text-input {
-    @apply w-full mt-1.5 dark:bg-gray-800/50 bg-white block rounded-md outline-1 focus:outline-2 outline-gray-300 dark:outline-gray-700 hover:cursor-pointer focus:cursor-text placeholder:text-gray-500 resize-none
-    focus:outline-interactive-light hover:outline-interactive-light dark:focus:outline-interactive-dark dark:hover:outline-interactive-dark
+    @apply w-full mt-1.5 dark:bg-gray-800/50 bg-white block rounded-md outline-1 focus:outline-2 outline-gray-300 dark:outline-gray-700 hover:cursor-pointer focus:cursor-text placeholder:text-gray-500 resize-none focus:outline-interactive-light hover:outline-interactive-light dark:focus:outline-interactive-dark dark:hover:outline-interactive-dark
   }
 
 }
