@@ -1,7 +1,7 @@
 // client/src/components/uploadDetailPage.tsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useAuth } from "../components/authContext";
+import { useAuth } from "./authContext";
 import type { Upload } from "../types/upload";
 import Masonry from "react-masonry-css";
 
@@ -45,17 +45,18 @@ export default function UploadDetailPage() {
     fetchAll();
   }, []);
 
+  // Masonry breakpoints
   const breakpointColumnsObj = {
     default: 4,
-    1024: 4,
-    850: 3,
-    600: 2,
+    1710: 4,
+    1400: 3,
+    800: 2,
   };
 
   if (!upload) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="lg:max-w-[900px] xl:max-w-[1100px] m-auto px-5 mt-10">
+    <div className="lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 mt-10">
       {/* Left side: selected upload */}
       <div className="flex-1 max-w-[600px]">
         <img
@@ -86,7 +87,7 @@ export default function UploadDetailPage() {
                 onClick={() => navigate(`/uploads/${u._id}`)}
               >
                 <img
-                  src={u.sizes?.thumbnail || u.url}
+                  src={u.sizes?.medium || u.url}
                   alt={u.title}
                   className="rounded-lg object-cover"
                 />
