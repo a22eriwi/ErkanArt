@@ -34,7 +34,7 @@ export default function Header({ onOpenLogin }: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-white mb-6 lg:border-none border-b-1 border-gray-300 dark:border-gray-800">
 
-      <div className="flex items-center justify-between lg:max-w-[900px] xl:max-w-[1100px] m-auto px-5">
+      <div className="flex items-center justify-between lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 lg:py-2">
         <div className="flex lg:flex-1 items-center">
           <NavLink to="/" end>
             <Logga className="w-[130px] sm:w-[150px] xl:w-[180px]" />
@@ -67,7 +67,7 @@ export default function Header({ onOpenLogin }: HeaderProps) {
                 <ChevronDownIcon aria-hidden="true" className="-mr-1 size-5" />
               </MenuButton>
 
-              <MenuItems transition className="absolute right-0 z-10 mt-1 w-60 p-3 text-sm origin-top-right font-semibold rounded-xl bg-gray-100 dark:bg-gray-900 shadow-md outline-1 outline-gray-200 dark:outline-gray-800
+              <MenuItems transition className="absolute right-0 z-10 mt-2 w-60 p-3 text-sm origin-top-right font-semibold rounded-xl bg-gray-100 dark:bg-gray-900 shadow-md outline-1 outline-gray-200 dark:outline-gray-800
                 transition data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in inset-ring-1 dark:inset-ring-white/5 inset-ring-gray-200/20">
                 <div>
                   <div className="p-3 pt-0">
@@ -116,27 +116,27 @@ export default function Header({ onOpenLogin }: HeaderProps) {
         </div>
       </div>
 
-      <nav aria-label="Global" className="hidden lg:flex items-center justify-center w-full py-3 lg:border-b-1 border-gray-300 dark:border-gray-800">
+      <nav aria-label="Global" className="hidden lg:flex items-center justify-center w-full pb-4 lg:border-b-1 border-gray-300 dark:border-gray-800">
         {/* Big nav */}
         <PopoverGroup className="hidden lg:flex">
           <div className="lg:flex lg:gap-x-10">
-            <NavLink to="/" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[17px] after:bottom-0 after:h-[2px] block
                 after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Home
             </NavLink>
-            <NavLink to="/paintings" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/paintings" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[17px] after:bottom-0 after:h-[2px] block
                 after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Paintings
             </NavLink>
-            <NavLink to="/photography" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/photography" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[17px] after:bottom-0 after:h-[2px] block
                after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Photography
             </NavLink>
-            <NavLink to="/artists" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/artists" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[17px] after:bottom-0 after:h-[2px] block
               after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               Artists
             </NavLink>
-            <NavLink to="/about" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[12px] after:bottom-0 after:h-[2px] block
+            <NavLink to="/about" className={({ isActive }) => `relative text-sm font-semibold after:absolute after:left-0 after:translate-y-[17px] after:bottom-0 after:h-[2px] block
               after:bg-sky-950 dark:after:bg-white after:transition-all after:duration-250 after:ease-in-out ${isActive ? "after:w-full" : "after:w-0 hover:after:w-full"}`}>
               About
             </NavLink>
