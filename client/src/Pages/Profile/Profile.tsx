@@ -28,7 +28,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="lg:max-w-[900px] xl:max-w-[1100px] m-auto px-5 mt-10">
+    <div className="lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 mt-10">
       <Outlet context={{ openUpload, setOnUploadSuccess }} /> {/* Renders Favorites, MyPaintings, or MyPhotographs */}
 
       <UploadModal
