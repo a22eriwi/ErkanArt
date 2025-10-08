@@ -1,4 +1,4 @@
-// client/src/Components/LoginModal.tsx
+// client/src/Components/loginModal.tsx
 import { useState } from "react";
 import { useAuth } from "./authContext";
 import KontoIcon from "../assets/konto.svg?react";
