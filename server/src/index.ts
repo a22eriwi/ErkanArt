@@ -16,6 +16,8 @@ import uploadsReadPublic from "./routes/uploads/read-public";
 import uploadsId from "./routes/uploads/read-id";
 import uploadsUpdate from "./routes/uploads/update";
 import uploadsDelete from "./routes/uploads/delete";
+import uploadsVisibilityUpdate from "./routes/uploads/visibility-update";
+import favoriteUpdate from "./routes/uploads/favorite-update";
 
 
 // routes/admin
@@ -47,6 +49,8 @@ app.use("/api", uploadsReadPublic);
 app.use("/api", uploadsUpdate);
 app.use("/api", uploadsDelete);
 app.use("/api", uploadsId);
+app.use("/api", uploadsVisibilityUpdate);
+app.use("/api", favoriteUpdate);
 
 // routes/admin
 app.use("/api", adminRoutes);
