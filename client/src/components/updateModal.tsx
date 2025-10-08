@@ -1,4 +1,4 @@
-
+// client/src/Components/updateModal.tsx  
 import { useAuth } from "./authContext";
 import { useEffect, useState } from "react";
 
@@ -64,7 +64,7 @@ export default function UpdateModal({ isOpen, onClose, upload, API_URL, onSucces
     return (
         <div onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-5">
             <div className="relative w-full max-w-[550px] px-8 py-8 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-xl dark:shadow-xl/30">
-                <h1 className="font-semibold text-center text-2xl">Edit Upload</h1>
+                <h1 className="font-semibold text-center text-2xl">Edit upload</h1>
 
                 {/* Close button */}
                 <button onClick={onClose} className="text-lg absolute top-3 right-3">
