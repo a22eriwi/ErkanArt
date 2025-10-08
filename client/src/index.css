@@ -39,6 +39,10 @@ button:hover {
   cursor: pointer;
 }
 
+  .filter-red{
+    filter: invert(27%) sepia(83%) saturate(7493%) hue-rotate(356deg) brightness(95%) contrast(107%);
+  }
+
 @theme {
   /* Color for primary button */
   --color-btn-primary-light: var(--color-sky-600);
