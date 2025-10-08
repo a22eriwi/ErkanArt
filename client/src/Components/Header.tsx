@@ -1,4 +1,4 @@
-// client/src/Components/Header.tsx
+// client/src/Components/header.tsx
 import { useTheme } from "../useTheme";
 import { NavLink } from "react-router-dom";
 
@@ -32,7 +32,7 @@ export default function Header({ onOpenLogin }: HeaderProps) {
 }
 
   return (
-    <header className="sticky top-0 z-30 bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-white mb-6 lg:border-none border-b-1 border-gray-300 dark:border-gray-800">
+    <header className=" bg-gray-100 dark:bg-gray-900 text-sky-950 dark:text-white mb-6 lg:border-none border-b-1 border-gray-300 dark:border-gray-800">
 
       <div className="flex items-center justify-between lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 lg:py-2">
         <div className="flex lg:flex-1 items-center">
