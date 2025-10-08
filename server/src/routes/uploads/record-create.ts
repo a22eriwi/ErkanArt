@@ -25,6 +25,7 @@ router.post(
         fileKey,     // original
         sizes,       // store the key for thumbnail and medium size { thumbnail: "...", medium: "..." }
         owner: req.user.id,
+        isPublic: false,  // default to false
       });
 
       await upload.save();
