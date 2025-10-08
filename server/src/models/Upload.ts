@@ -1,4 +1,4 @@
-// server/src/models/Upload.ts
+// server/src/models/upload.ts
 import { Schema, model, Document, Types } from "mongoose";
 import { IUser } from "./user";
 
@@ -13,6 +13,7 @@ export interface IUpload extends Document {
   };
   owner: Types.ObjectId | IUser; // either ObjectId or populated User
   createdAt: Date;
+  isPublic: boolean;
 }
 
 const uploadSchema = new Schema<IUpload>({
@@ -26,6 +27,7 @@ const uploadSchema = new Schema<IUpload>({
   },
   owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
   createdAt: { type: Date, default: Date.now },
+  isPublic: { type: Boolean, default: false },
 });
 
 export default model<IUpload>("Upload", uploadSchema);
