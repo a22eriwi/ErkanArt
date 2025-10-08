@@ -24,17 +24,23 @@ const router = createBrowserRouter([
       { path: "artists", element: <Artists /> },
       { path: "paintings", element: <Paintings /> },
       { path: "photography", element: <Photography /> },
-      { path: "uploads/:id", element: <UploadDetailPage/> },
+      
+      //Public detail page
+      { path: ":type/:id", element: <UploadDetailPage /> },
 
       // Profile parent route
       {
-        path: "/:username", element: <Profile />, // renders <Outlet />
+        path: "/:username",
+        element: <Profile />, // renders <Outlet />
         children: [
           { path: "favorites", element: <Favorites /> },
           { path: "paintings", element: <MyPaintings /> },
           { path: "photographs", element: <MyPhotographs /> },
+
+          // Detail inside profile (user-specific)
+          { path: ":type/:id", element: <UploadDetailPage /> },
         ],
-      }
+      },
     ],
   },
 ]);
