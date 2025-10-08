@@ -1,15 +1,20 @@
-// client/src/components/uploadDetailPage.tsx
-import { useParams, useNavigate } from "react-router-dom";
+// client/src/components/detailPage.tsx
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "./authContext";
 import type { Upload } from "../types/upload";
 import Masonry from "react-masonry-css";
 
 export default function UploadDetailPage() {
-  const { id } = useParams<{ id: string }>();
+  const { id, username, type } = useParams<{ id: string; username: string; type: "painting" | "photograph" }>();
+  const cleanType = type!.slice(0, -1); // "painting" or "photograph"
+  const location = useLocation();
   const navigate = useNavigate();
-  const { apiFetch } = useAuth();
+  const { apiFetch, user } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL;
+
+  // detect if -> in profile (user's own uploads)
+  const isOwnProfile = username === `${user?.firstName.toLowerCase()}-${user?.lastName.toLowerCase()}`;
 
   const [upload, setUpload] = useState<Upload | null>(null);
   const [uploads, setUploads] = useState<Upload[]>([]);
@@ -34,7 +39,9 @@ export default function UploadDetailPage() {
   useEffect(() => {
     async function fetchAll() {
       try {
-        const res = await apiFetch(`${API_URL}/uploads/public?type=painting`);
+
+        const route = isOwnProfile ? "user" : "public";
+        const res = await apiFetch(`${API_URL}/uploads/${route}?type=${cleanType}`);
         if (!res.ok) throw new Error("Failed to fetch uploads");
         const data = await res.json();
         setUploads(data);
@@ -43,7 +50,7 @@ export default function UploadDetailPage() {
       }
     }
     fetchAll();
-  }, []);
+  }, [isOwnProfile, location.pathname]);
 
   // Masonry breakpoints
   const breakpointColumnsObj = {
@@ -56,22 +63,18 @@ export default function UploadDetailPage() {
   if (!upload) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className="lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 mt-10">
+    <div className="lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 lg:px-0">
       {/* Left side: selected upload */}
-      <div className="flex-1 max-w-[600px]">
-        <img
-          src={upload.sizes?.medium || upload.url}
-          alt={upload.title}
-          className="w-full rounded-lg mb-6"
-        />
-        <div className="mt-4">
-          <h2 className="text-2xl font-semibold">{upload.title}</h2>
-          {upload.description && (
-            <p className="text-gray-600 dark:text-gray-300">{upload.description}</p>
-          )}
-          <p className="text-sm text-gray-400 mt-2">
-            by {upload.owner.firstName} {upload.owner.lastName}
+      <div className="grid gap-5 lg:flex mb-15">
+        <img src={upload.sizes?.medium || upload.url} alt={upload.title} className="rounded-lg max-h-[70vh] 2xl:max-h-[80vh] lg:max-w-[65vw] 2xl:max-w-[55vw] 3xl:max-w-[50vw]" />
+        <div>
+          <p className="text-sm">
+            {upload.owner.firstName} {upload.owner.lastName}
           </p>
+          <h2 className="text-xl md:text-2xl font-semibold mt-2 italic break-words">{upload.title}</h2>
+          {upload.description && (
+            <p className="text-gray-600 dark:text-gray-300 mt-2">{upload.description}</p>
+          )}
         </div>
       </div>
 
@@ -81,16 +84,9 @@ export default function UploadDetailPage() {
           {uploads
             .filter((u) => u._id !== upload._id)
             .map((u) => (
-              <div
-                key={u._id}
-                className="cursor-pointer"
-                onClick={() => navigate(`/uploads/${u._id}`)}
-              >
-                <img
-                  src={u.sizes?.medium || u.url}
-                  alt={u.title}
-                  className="rounded-lg object-cover"
-                />
+              <div key={u._id} className="cursor-pointer relative group" onClick={() => navigate(`/${username}/${type}/${u._id}`)}>
+                <img src={u.sizes?.medium || u.url} alt={u.title} className="rounded-lg object-cover" />
+                <div className="bg-black absolute top-0 right-0 w-[100%] h-[100%] rounded-lg opacity-0 group-hover:opacity-30 transition ease-in-out"></div>
               </div>
             ))}
         </Masonry>
