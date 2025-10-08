@@ -4,11 +4,14 @@ import Masonry from "react-masonry-css";
 import type { Upload } from "../types/upload";
 import { useAuth } from "../components/authContext";
 import { NavLink } from "react-router-dom";
+import FavoriteIcon from "../assets/favoriteIcon.svg?react";
+import FilledFavoriteIcon from "../assets/filledFavoriteIcon.svg?react";
 
 export default function Paintings() {
   const API_URL = import.meta.env.VITE_API_URL;
   const [uploads, setUploads] = useState<Upload[]>([]);
   const { apiFetch } = useAuth();
+  const { user } = useAuth();
 
   async function fetchUploads() {
     try {
@@ -18,6 +21,24 @@ export default function Paintings() {
       setUploads(data);
     } catch (err) {
       console.error("Error loading uploads:", err);
+    }
+  }
+
+  async function toggleFavorite(id: string, _favorited: boolean) {
+    try {
+      const res = await apiFetch(`${API_URL}/uploads/${id}/favorite`, {
+        method: "PATCH",
+      });
+      if (!res.ok) throw new Error("Failed to toggle favorite");
+      const data = await res.json();
+
+      setUploads((prev) =>
+        prev.map((u) =>
+          u._id === id ? { ...u, isFavorited: data.favorited } : u
+        )
+      );
+    } catch (err) {
+      console.error("Error toggling favorite:", err);
     }
   }
 
@@ -37,7 +58,7 @@ export default function Paintings() {
   };
 
   return (
-    <div className="lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5 mt-10">
+    <div className="lg:max-w-[90vw] 2xl:max-w-[80vw] 3xl:max-w-[65vw] m-auto px-5">
 
       {/* Uploaded paintings */}
       {uploads.length > 0 && (
@@ -46,13 +67,25 @@ export default function Paintings() {
             const imgSrc = u.sizes?.thumbnail || u.url;
             const ownerName = u.owner ? `${u.owner.firstName} ${u.owner.lastName}` : "Unknown";
             return (
-              <div key={u._id} className=" overflow-hidden relative mb-2">
-                <div className="group">
-                  <NavLink to={`/uploads/${u._id}`}>
-                    <img src={imgSrc} alt={u.title} loading="lazy" className="h-auto object-cover group-hover:opacity-70 transition-transform duration-300 hover:cursor-pointer rounded-lg" />
+              <div key={u._id} className=" overflow-hidden mb-2">
+                <div className="group relative ">
+                  {/* div that creates hover effect  */}
+                  <NavLink to={`/paintings/${u._id}`}>
+                    <img src={imgSrc} alt={u.title} loading="lazy" className=" rounded-lg w-[100%] h-[100%]" />
+                    <div className="bg-black absolute top-0 right-0 w-[100%] h-[100%] rounded-lg opacity-0 group-hover:opacity-30 transition ease-in-out"></div>
                   </NavLink>
-                  {/* Overlay buttons */}
-
+                  <div className="absolute top-2 right-2 flex cursor-pointer group-hover:opacity-100">
+                    {/* Favorite button */}
+                    {user && (
+                      <button onClick={() => toggleFavorite(u._id, u.isFavorited || false)} className="btn btn-secondary p-1.5">
+                        {u.isFavorited ? (
+                          <FilledFavoriteIcon className="size-5" />
+                        ) : (
+                          <FavoriteIcon className="size-5" />
+                        )}
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <section className="py-2 px-1.5 cursor-default">
                   <h3 className="mt-1 text-sm">{ownerName}</h3>
