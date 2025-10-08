@@ -14,4 +14,6 @@ export type Upload = {
     firstName: string;
     lastName: string;
   };
+  isPublic: boolean;
+  isFavorited: boolean;
 };
