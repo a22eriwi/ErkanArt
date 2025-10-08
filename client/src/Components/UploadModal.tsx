@@ -1,4 +1,4 @@
-// client/src/Components/UploadModal.tsx  
+// client/src/Components/uploadModal.tsx  
 import { useState, useEffect } from "react";
 import { useAuth } from "./authContext";
 import UploadIcon from "../assets/uploadIcon.svg?react";
@@ -6,20 +6,21 @@ import DeleteIcon from "../assets/deleteIcon.svg?react";
 
 export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { type: "painting" | "photograph"; isOpen: boolean; onClose: () => void; onSuccess?: () => void; }) {
   const API_URL = import.meta.env.VITE_API_URL;
-  const { accessToken } = useAuth();
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const { apiFetch } = useAuth();
+  const [errors, setErrors] = useState<{ file?: string; title?: string }>({});
 
-  // Central cleanup for file, title, description & preview
+  // Central cleanup for file, title, description preview, status & errors
   function clearFileAndState() {
-    setFile(null);         // triggers useEffect -> revokes preview URL
+    setFile(null);
     setTitle("");
     setDescription("");
     setStatus(null);
+    setErrors({});
   }
 
   // Create preview URL on file change
@@ -39,7 +40,17 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
   if (!isOpen) return null;
 
   async function handleUpload() {
-    if (!file || !accessToken) return;
+    if (!file) {
+      setErrors({ file: "File is required" });
+      return;
+    }
+
+    if (!title) {
+      setErrors({ title: "Title is required" });
+      return;
+    }
+
+    setErrors({});
 
     async function resizeImage(
       file: File,
@@ -124,12 +135,11 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
       ]);
 
       // Save record in MongoDB
-      await fetch(`${API_URL}/uploads/record`, {
+      await apiFetch(`${API_URL}/uploads/record`, {
         method: "POST",
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           title,
@@ -161,7 +171,7 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
       {/* Modal container */}
       <div className="relative w-full max-w-[550px] px-8 py-8 rounded-xl bg-gray-100 dark:bg-gray-900 shadow-xl dark:shadow-xl/30">
 
-        <h1 className="font-semibold text-center text-2xl">Publish {type}</h1>
+        <h1 className="font-semibold text-center text-2xl">Upload {type}</h1>
         {/* Close button */}
         <button onClick={() => { clearFileAndState(); onClose(); }} className="text-lg absolute top-3 right-3">
           ✕
@@ -173,55 +183,61 @@ export default function UploadModal({ type, isOpen, onClose, onSuccess, }: { typ
               <div className="flex justify-center">
                 <div className="max-w-xs relative">
                   <img src={previewUrl} alt="Preview" className="rounded-md h-full w-full object-contain" />
-                  <div onClick={() => setFile(null)} className="btn btn-accent absolute top-2 right-2 px-1 py-1 cursor-pointer">
+                  <div onClick={() => { setFile(null); setErrors({}); }} className="btn btn-accent absolute top-2 right-2 px-1 py-1 cursor-pointer">
                     <DeleteIcon className="size-5" />
                   </div>
                 </div>
               </div>
             </>
           ) : (
-            <div className="flex justify-center">
-              <div className="relative flex flex-col items-center justify-center outline-dashed cursor-pointer p-10 h-[300px] w-xs text-input"
-                onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files?.[0]) { setFile(e.dataTransfer.files[0]); } }}>
-                <UploadIcon className="size-8 text-gray-500 dark:text-gray-400" />
-                <span className=" text-gray-500 dark:text-gray-400 mt-2">
-                  Choose a file or drag and drop it here
-                </span>
-                {/* Hidden file input that covers the whole div */}
-                <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => setFile(e.target.files?.[0] || null)} className="absolute inset-0 opacity-0 cursor-pointer" />
+            <div>
+              <div className="flex justify-center">
+                <div className="relative flex flex-col items-center justify-center outline-dashed cursor-pointer p-10 h-[300px] w-xs text-input"
+                  onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (e.dataTransfer.files?.[0]) { setFile(e.dataTransfer.files[0]); } }}>
+                  <UploadIcon className="size-8 text-gray-500 dark:text-gray-400" />
+                  <span className=" text-gray-500 dark:text-gray-400 mt-2">
+                    Choose a file or drag and drop it here
+                  </span>
+                  {/* Hidden file input that covers the whole div */}
+                  <input type="file" accept="image/jpeg,image/png,image/webp" onChange={(e) => {
+                    setFile(e.target.files?.[0] || null); if (errors.file) setErrors((prev) => ({ ...prev, file: undefined }));
+                  }} className="absolute inset-0 opacity-0 cursor-pointer" />
+                </div>
               </div>
+              {errors.file && <p className="text-red-500 text-xs text-center mt-1.5">{errors.file}</p>}
             </div>
           )}
 
           <div className="flex justify-center mt-5">
             <div className="text-left w-full">
-              {/* Title input */}
-              <label htmlFor="title" className="text-sm">
-                Title
-              </label>
-              <input id="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={`(Required)`} className="text-input px-3 py-4 mb-4" />
-
+              <div className="mb-4">
+                {/* Title input */}
+                <label htmlFor="title" className="text-sm">
+                  Title
+                </label>
+                <input id="title" type="text" value={title} onChange={(e) => {
+                  setTitle(e.target.value); if (errors.title) setErrors((prev) => ({ ...prev, title: undefined }));
+                }} placeholder={`(Required)`} className="text-input px-3 py-4" />
+                {errors.title && <p className="text-red-500 text-xs mt-1.5">{errors.title}</p>}
+              </div>
               {/* Description input */}
               <label htmlFor="description" className="text-sm">
                 Description
               </label>
-              <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="(Optional)" rows={4} className="text-input px-3 py-4">
+              <textarea id="description" value={description} onChange={(e) => setDescription(e.target.value)} placeholder="(Optional)" rows={4} className="text-input px-3 py-4 mb-4">
               </textarea>
             </div>
           </div>
           <div className="flex justify-between mt-6">
             <div className="flex items-center">
               {status && (
-                <p
-                  className={`text-center font-semibold ${status.includes("successful") ? "text-emerald-400" : "text-red-500"
-                    }`}
-                >
+                <p className={`text-center font-semibold ${status.includes("successful") ? "text-emerald-400" : "text-red-500"}`}>
                   {status}
                 </p>
               )}
             </div>
-            <button onClick={handleUpload} disabled={!file || !title} className="btn btn-primary w-full max-w-[80px]">
-              Publish
+            <button onClick={handleUpload} className="btn btn-primary w-full max-w-[90px]">
+              Continue
             </button>
           </div>
         </div>
