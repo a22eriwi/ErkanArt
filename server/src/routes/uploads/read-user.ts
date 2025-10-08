@@ -25,6 +25,7 @@ router.get("/uploads/user", requireAuth, async (req: AuthRequest, res: Response)
       description: u.description,
       type: u.type,
       url: `${process.env.R2_PUBLIC_URL}/${u.fileKey}`,  // original
+      isPublic: u.isPublic,
       sizes: {
         thumbnail: u.sizes?.thumbnail ? `${process.env.R2_PUBLIC_URL}/${u.sizes.thumbnail}` : null,
         medium: u.sizes?.medium ? `${process.env.R2_PUBLIC_URL}/${u.sizes.medium}` : null,
