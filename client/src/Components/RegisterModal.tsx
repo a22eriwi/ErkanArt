@@ -1,4 +1,4 @@
-// client/src/Components/RegisterModal.tsx
+// client/src/Components/registerModal.tsx
 import { useState } from "react";
 import KontoIcon from "../assets/konto.svg?react";
 
