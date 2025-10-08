@@ -10,7 +10,7 @@ router.get("/uploads/public", async (req, res: Response) => {
   try {
     const { type } = req.query;
 
-    const query: any = {};
+    const query: any = { isPublic: true };
     if (type) query.type = type;
 
     const uploads = await Upload.find(query)
@@ -24,6 +24,7 @@ router.get("/uploads/public", async (req, res: Response) => {
       description: u.description,
       type: u.type,
       url: `${process.env.R2_PUBLIC_URL}/${u.fileKey}`,
+      isPublic: u.isPublic,
       sizes: {
         thumbnail: u.sizes?.thumbnail ? `${process.env.R2_PUBLIC_URL}/${u.sizes.thumbnail}` : null,
         medium: u.sizes?.medium ? `${process.env.R2_PUBLIC_URL}/${u.sizes.medium}` : null,
